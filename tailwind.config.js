@@ -20,6 +20,8 @@ module.exports = {
     themes: [],
   },
   darkMode: "class",
-  plugins: [require("daisyui"), nextui()],
+  plugins: [require("daisyui"), nextui({
+    
+  })],
 
 };

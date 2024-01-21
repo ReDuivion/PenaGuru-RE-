@@ -6,9 +6,14 @@ import { useRouter } from "next/navigation";
 import { Button, Input } from "@nextui-org/react";
 import TeacherCard from "../components/Guru/TeacherCard.jsx";
 import moment from 'moment';
+import Link from 'next/link'
 
 const AdminDashboard = () => {
   const [isAdmin, setIsAdmin] = useState(false);
+  const [dataAdmin, setDataAdmin] = useState({
+    nama_user: "",
+    jenis_user: "",
+  })
   const [userEmail, setUserEmail] = useState(null);
   const [teachers, setTeachers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -67,7 +72,7 @@ const AdminDashboard = () => {
 
         const { data: adminData, error: adminError } = await supabase
           .from("admins")
-          .select("email")
+          .select("*")
           .eq("email", user.email)
           .single();
 
@@ -82,6 +87,8 @@ const AdminDashboard = () => {
         } else {
           console.log("User is an admin");
           setIsAdmin(true);
+          setDataAdmin(adminData)
+          console.log(setDataAdmin)
         }
       } catch (error) {
         console.error("Error checking admin access:", error.message);
@@ -113,40 +120,42 @@ const AdminDashboard = () => {
   }
 
   return (
-    <div className="flex flex-col md:flex-row min-h-screen bg-indigo-100 text-indigo-800">
+    <div className="flex flex-col md:flex-row min-h-screen bg-gray-100 text-gray-800">
       {/* Sidebar */}
-      <div className="w-full md:w-1/5 bg-indigo-200 p-4">
-        <h2 className="text-lg font-semibold mb-4">Sidebar</h2>
-        <ul>
-          <li>
-            <a href="#" className="text-indigo-600 hover:text-indigo-800">
+      <div className="w-full md:w-1/5 bg-blue-300 p-4">
+        {/* Sidebar content */}
+        <h2 className="text-lg font-semibold mb-4">Welcome Admin: {dataAdmin.nama_user}</h2>
+        <div>
+          <Link href="#" passHref>
+            <Button className="text-white bg-blue-400 w-80 block font-semibold mb-3">
               Menu 1
-            </a>
-          </li>
-          <li>
-            <a href="#" className="text-indigo-600 hover:text-indigo-800">
+            </Button>
+          </Link>
+          <Link href="#" passHref>
+            <Button className="text-white bg-blue-400 w-80 font-semibold block mb-3">
               Menu 2
-            </a>
-          </li>
-          <li>
-            <a href="#" className="text-indigo-600 hover:text-indigo-800">
+            </Button>
+          </Link>
+          <Link href="#" passHref>
+            <Button className="text-white bg-blue-400 w-80 font-semibold block mb-3">
               Settings
-            </a>
-          </li>
-          <li>
-            <Button onClick={handleLogout} color="error" auto>
+            </Button>
+          </Link>
+          <Link href="/" passHref>
+            <Button onClick={handleLogout} color="danger" className="w-80 mb-3" >
               Logout
             </Button>
-          </li>
-        </ul>
+          </Link>
+        </div>
       </div>
 
       {/* Main Content */}
       <div className="flex-1 p-4">
+        {/* Main content */}
         <h1 className="text-2xl font-semibold mb-2">
           Selamat datang di admin dashboard
         </h1>
-        <h2 className="text-lg mb-4">Email Pengguna: {userEmail}</h2>
+        <h2 className="text-lg mb-4">Email Admin: {userEmail}</h2>
 
         {/* Search Bar */}
         <div className="mb-4">
@@ -163,8 +172,8 @@ const AdminDashboard = () => {
           {teachers
             .filter(
               (teacher) =>
-                teacher.email &&
-                teacher.email.toLowerCase().includes(searchTerm.toLowerCase())
+                teacher.nama_user &&
+                teacher.nama_user.toLowerCase().includes(searchTerm.toLowerCase())
             )
             .map((teacher) => (
               <TeacherCard
