@@ -1,43 +1,68 @@
-"use client";
+'use client'
 // pages/admin-dashboard.js
 import { useEffect, useState } from "react";
 import { supabase } from "../config/supabase.js";
 import { useRouter } from "next/navigation";
 import { Button, Input } from "@nextui-org/react";
+import TeacherCard from "../components/Guru/TeacherCard.jsx";
+import moment from 'moment';
 
 const AdminDashboard = () => {
   const [isAdmin, setIsAdmin] = useState(false);
   const [userEmail, setUserEmail] = useState(null);
-  const [users, setUsers] = useState([]);
+  const [teachers, setTeachers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const router = useRouter();
 
+  const isTeacherOnline = (lastActivity) => {
+    if (lastActivity === null) {
+      return false;
+    }
+
+    const currentTime = moment();
+    const activityTime = moment(lastActivity);
+    const thresholdMinutes = 15;
+
+    return currentTime.diff(activityTime, 'minutes') <= thresholdMinutes;
+  };
+
   useEffect(() => {
-    const fetchUsers = async () => {
+    const fetchTeachers = async () => {
       try {
         const { data, error } = await supabase
-          .from("profiles") // Ganti 'users' menjadi 'profiles'
-          .select("*"); // Pilih semua kolom
+          .from("profiles")
+          .select("*");
 
         if (error) {
-          console.error("Error fetching users:", error.message);
+          console.error("Error fetching teachers:", error.message);
         } else {
-          setUsers(data);
+          setTeachers(data);
         }
       } catch (error) {
-        console.error("Error fetching users:", error.message);
+        console.error("Error fetching teachers:", error.message);
       }
     };
 
-    fetchUsers();
-  }, []);
+    const channel = supabase
+      .channel('presence:teachers')
+      .on('UPDATE', (payload) => {
+        // Handle the update event for the 'profiles' table
+        console.log('Profile updated:', payload);
 
-  useEffect(() => {
+        const updatedTeacher = payload.new;
+        setTeachers((prevTeachers) =>
+          prevTeachers.map((teacher) =>
+            teacher.id === updatedTeacher.id ? updatedTeacher : teacher
+          )
+        );
+      })
+      .subscribe();
+
     const checkAdminAccess = async () => {
       try {
         const {
           data: { user },
-        } = await supabase.auth.getUser(); // Gunakan format yang benar
+        } = await supabase.auth.getUser();
         setUserEmail(user.email);
 
         const { data: adminData, error: adminError } = await supabase
@@ -65,7 +90,13 @@ const AdminDashboard = () => {
       }
     };
 
+    fetchTeachers();
     checkAdminAccess();
+
+    // Cleanup function: Unsubscribe from the channel when the component unmounts
+    return () => {
+      channel.unsubscribe();
+    };
   }, [router]);
 
   const handleLogout = async () => {
@@ -120,28 +151,29 @@ const AdminDashboard = () => {
         {/* Search Bar */}
         <div className="mb-4">
           <Input
-            placeholder="Cari pengguna..."
+            placeholder="Cari guru..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
 
-        {/* Display list of users */}
+        {/* Display list of teachers in cards */}
         <div>
           <h2 className="text-xl font-semibold mb-2">Daftar Guru</h2>
-          <ul>
-            {users
-              .filter(
-                (user) =>
-                  user.email &&
-                  user.email.toLowerCase().includes(searchTerm.toLowerCase())
-              )
-              .map((user) => (
-                <li key={user.id} className="mb-2">
-                  {user.nama_user} - {user.email}
-                </li>
-              ))}
-          </ul>
+          {teachers
+            .filter(
+              (teacher) =>
+                teacher.email &&
+                teacher.email.toLowerCase().includes(searchTerm.toLowerCase())
+            )
+            .map((teacher) => (
+              <TeacherCard
+                key={teacher.id}
+                name={teacher.nama_user}
+                email={teacher.email}
+                isOnline={isTeacherOnline(teacher.last_activity)}
+              />
+            ))}
         </div>
       </div>
     </div>
