@@ -1,5 +1,6 @@
 'use client'
 // pages/admin-dashboard.js
+import { BiSolidDashboard } from "react-icons/bi";
 import { useEffect, useState } from "react";
 import { supabase } from "../config/supabase.js";
 import { useRouter } from "next/navigation";
@@ -124,6 +125,8 @@ const AdminDashboard = () => {
       {/* Sidebar */}
       <div className="w-full md:w-1/5 bg-blue-300 p-4">
         {/* Sidebar content */}
+
+     <BiSolidDashboard size={'3em'}/>
         <h2 className="text-lg font-semibold mb-4">Welcome Admin: {dataAdmin.nama_user}</h2>
         <div>
           <Link href="#" passHref>
@@ -153,7 +156,7 @@ const AdminDashboard = () => {
       <div className="flex-1 p-4">
         {/* Main content */}
         <h1 className="text-2xl font-semibold mb-2">
-          Selamat datang di admin dashboard
+          Selamat datang di Admin dashboard
         </h1>
         <h2 className="text-lg mb-4">Email Admin: {userEmail}</h2>
 
