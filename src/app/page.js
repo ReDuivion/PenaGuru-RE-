@@ -27,6 +27,7 @@ export default function Home() {
 
     // Memanggil updateUserActivity untuk pembaruan awal
     updateUserActivity();
+    console.log(updateUserActivity)
 
     // Membuat koneksi ke WebSocket Supabase dengan saluran 'room1'
     const realTimeConnection = supabase

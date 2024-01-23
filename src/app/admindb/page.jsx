@@ -8,7 +8,7 @@ import { Button, Input } from "@nextui-org/react";
 import TeacherCard from "../components/Guru/TeacherCard.jsx";
 import moment from 'moment';
 import Link from 'next/link'
-
+import AdminRouteProtection from "../components/Admin/AdminRouterProtection.jsx";
 const AdminDashboard = () => {
   const [isAdmin, setIsAdmin] = useState(false);
   const [dataAdmin, setDataAdmin] = useState({
