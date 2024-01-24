@@ -1,16 +1,18 @@
 'use client'
-import Carousels from "./components/Home/Carousels";
-import  { supabase } from "./config/supabase.js"
-import { useEffect } from "react";
+import { useEffect, useState } from 'react';
+import { supabase } from './config/supabase.js';
+import moment from 'moment-timezone';
+import Carousels from './components/Home/Carousels.jsx';
+
 export default function Home() {
+  const [lastActivityLocal, setLastActivityLocal] = useState('');
+
   useEffect(() => {
-    // Fungsi untuk memperbarui aktivitas pengguna
     const updateUserActivity = async () => {
       try {
         const { data: { user } } = await supabase.auth.getUser();
 
         if (user) {
-          // Mengupdate data di database Supabase
           const { error } = await supabase
             .from('profiles')
             .update({ last_activity: new Date().toISOString() })
@@ -25,28 +27,41 @@ export default function Home() {
       }
     };
 
-    // Memanggil updateUserActivity untuk pembaruan awal
     updateUserActivity();
-    console.log(updateUserActivity)
 
-    // Membuat koneksi ke WebSocket Supabase dengan saluran 'room1'
+
     const realTimeConnection = supabase
-      .channel('room1')
-      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'profiles' }, payload => {
-        console.log('Real-time update received:', payload);
-        // Lakukan sesuatu dengan pembaruan, misalnya perbarui state atau tampilkan notifikasi
-      })
-      .subscribe();
+    .channel('room1')
+    .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'profiles' }, payload => {
+      console.log('Real-time update received:', payload);
+  
+      // Menggunakan optional chaining untuk menghindari kesalahan
+      const lastActivityUTC = moment(payload?.record?.last_activity);
+  
+      // Periksa apakah lastActivityUTC valid sebelum mencoba mengonversi
+      if (lastActivityUTC.isValid()) {
+        // Konversi ke zona waktu Asia/Jakarta dan format
+        const lastActivityLocalString = lastActivityUTC.tz('Asia/Jakarta').format('LLL');
+        
+        // Update state atau lakukan tindakan lain dengan timestamp lokal
+        setLastActivityLocal(lastActivityLocalString);
+      } else {
+        console.error('Format timestamp tidak valid:', payload?.record?.last_activity);
+      }
+    })
+    .subscribe();
+  
 
-    // Membersihkan koneksi saat komponen unmount
     return () => {
       realTimeConnection.unsubscribe();
     };
-  }, []);
+  }, []); 
+
   return (
-   <div>
-    <Carousels/>
-    <h1>Hello World</h1>
-   </div>
+    <div>
+      <Carousels />
+      <h1>Hello World</h1>
+      <p>Last Activity (Local): {lastActivityLocal}</p>
+    </div>
   );
 }
