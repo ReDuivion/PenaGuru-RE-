@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { RiStackFill } from "react-icons/ri";
 import {
   Navbar,
   NavbarBrand,
@@ -14,14 +15,22 @@ import {
   DropdownTrigger,
   DropdownMenu,
   DropdownItem,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  Text,
 } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
+import { FaUserCheck } from "react-icons/fa";
+import { FaUserGear } from "react-icons/fa6";
+import { RiAdminLine } from "react-icons/ri";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const router = useRouter();
   const menuItems = [
-    "Profile",
+    "me",
     "Dashboard",
     "Activity",
     "Analytics",
@@ -42,16 +51,20 @@ export default function Header() {
   };
 
   const handleGuru = () => {
-    router.push("/me/edit")
-  }
+    router.push("/me/edit");
+  };
 
   const handleStaff = () => {
-    router.push("/me/editstaff")
-  }
+    router.push("/me/editstaff");
+  };
 
   const handleAdmin = () => {
-    router.push("/me/editadmin")
-  }
+    router.push("/me/editadmin");
+  };
+
+  const handleHome = () => {
+    router.push("/");
+  };
   return (
     <>
       <Navbar
@@ -67,18 +80,40 @@ export default function Header() {
 
         <NavbarContent className="sm:hidden pr-3" justify="center">
           <NavbarBrand>
-            <p className="font-bold text-purple-500">ACME</p>
+            <p
+              className="font-bold text-purple-500 cursor-pointer"
+              onClick={handleHome}
+            >
+              PenaGuru
+            </p>
           </NavbarBrand>
         </NavbarContent>
 
         <NavbarContent className="hidden sm:flex gap-4" justify="center">
           <NavbarBrand>
-            <p className="font-bold text-purple-500">PenaGuru</p>
+            <p
+              className="font-bold text-purple-500 cursor-pointer"
+              onClick={handleHome}
+            >
+              PenaGuru
+            </p>
           </NavbarBrand>
           <NavbarItem>
-            <Link color="purple" href="#">
-              Features
-            </Link>
+            <Popover placement="bottom">
+              <PopoverTrigger>
+                <Link color="purple" className="btn">
+                  Integrations
+                </Link>
+              </PopoverTrigger>
+              <PopoverContent className="bg-white shadow-md p-4">
+                <div className="mb-4">
+                  <h2 className="text-sm font-semibold mb-2">
+                    Popover Content
+                  </h2>
+                  <RiStackFill />
+                </div>
+              </PopoverContent>
+            </Popover>
           </NavbarItem>
           <NavbarItem isActive>
             <Link href="#" aria-current="page">
@@ -96,7 +131,7 @@ export default function Header() {
           <NavbarItem className="hidden lg:flex">
             <Button
               onClick={handleLoginClick}
-              className="bg-indigo-200"
+              className="btn bg-dark"
               variant="shadow"
             >
               Login
@@ -105,15 +140,39 @@ export default function Header() {
           <NavbarItem>
             <Dropdown>
               <DropdownTrigger>
-                <Button className="bg-indigo-400" href="#" variant="shadow">
+                <Button className="btn bg-dark" href="#" variant="shadow">
                   Member
                 </Button>
               </DropdownTrigger>
               <DropdownMenu aria-label="Static Actions">
-                <DropdownItem onClick={handleSignUpClick} className="text-bold" key="news">Buat Akun (Click Me)</DropdownItem>
-                <DropdownItem onClick={handleGuru} key="new">Edit Guru</DropdownItem>
-                <DropdownItem onClick={handleStaff} key="copy">Edit Staff</DropdownItem>
-                <DropdownItem onClick={handleAdmin} key="edit">Edit Admin</DropdownItem>
+                <DropdownItem
+                  onClick={handleSignUpClick}
+                  className="text-bold"
+                  key="news"
+                >
+                  Buat Akun (Click Me)
+                </DropdownItem>
+                <DropdownItem
+                  onClick={handleGuru}
+                  key="new"
+                  startContent={<FaUserCheck />}
+                >
+                  Edit Guru
+                </DropdownItem>
+                <DropdownItem
+                  onClick={handleStaff}
+                  key="copy"
+                  startContent={<FaUserGear />}
+                >
+                  Edit Staff
+                </DropdownItem>
+                <DropdownItem
+                  onClick={handleAdmin}
+                  key="edit"
+                  startContent={<RiAdminLine />}
+                >
+                  Edit Admin
+                </DropdownItem>
               </DropdownMenu>
             </Dropdown>
           </NavbarItem>
