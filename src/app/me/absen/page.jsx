@@ -1,7 +1,7 @@
-'use client'
-import { useEffect, useState } from 'react';
-import { supabase } from '../../config/supabase';
-import { startOfDay, setHours, format } from 'date-fns';
+"use client";
+import { useEffect, useState } from "react";
+import { supabase } from "../../config/supabase";
+import { startOfDay, setHours, format } from "date-fns";
 
 const Presensi = () => {
   const [userData, setUserData] = useState({
@@ -13,7 +13,9 @@ const Presensi = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const { data: { user } } = await supabase.auth.getUser();
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
 
         const { data: profileData, error: profileError } = await supabase
           .from("profiles")
@@ -37,12 +39,12 @@ const Presensi = () => {
 
   const checkPresensi = async (userId) => {
     try {
-      const today = format(new Date(), 'yyyy-MM-dd');
+      const today = format(new Date(), "yyyy-MM-dd");
       const { data, error } = await supabase
-        .from('absensi')
-        .select('*')
-        .eq('id_guru', userId)
-        .eq('tanggal_absensi', today);
+        .from("absensi")
+        .select("*")
+        .eq("id_guru", userId)
+        .eq("tanggal_absensi", today);
       if (error) {
         throw error;
       }
@@ -52,7 +54,7 @@ const Presensi = () => {
         setPresensiData(null); // Tidak ada presensi untuk hari ini
       }
     } catch (error) {
-      console.error('Error checking presensi status:', error.message);
+      console.error("Error checking presensi status:", error.message);
     }
   };
 
@@ -61,7 +63,13 @@ const Presensi = () => {
       const now = new Date();
       const today = format(now, 'yyyy-MM-dd');
       const checkInTime = setHours(startOfDay(now), 7); // Check-in pada jam 7 pagi setiap hari
-
+  
+      // Periksa apakah sudah lewat waktu check-in
+      if (now > checkInTime) {
+        console.log('Maaf, sudah melewati waktu check-in.');
+        return;
+      }
+  
       // Simpan data presensi ke dalam tabel absensi
       const { error } = await supabase
         .from('absensi')
@@ -79,7 +87,34 @@ const Presensi = () => {
   const handleCheckOut = async () => {
     try {
       const now = new Date();
-
+      let checkOutTime;
+  
+      // Tentukan waktu check-out berdasarkan hari
+      switch (now.getDay()) {
+        case 1: // Senin
+          checkOutTime = setHours(startOfDay(now), 15, 10); // Mengatur jam 15:10 (3:10 PM) untuk Senin
+          break;
+        case 2: // Selasa
+          checkOutTime = setHours(startOfDay(now), 15, 50); // Mengatur jam 15:50 (3:50 PM) untuk Selasa
+          break;
+        case 3: // Rabu dan Kamis
+        case 4:
+          checkOutTime = setHours(startOfDay(now), 14, 30); // Mengatur jam 14:30 (2:30 PM) untuk Rabu dan Kamis
+          break;
+        case 5: // Jumat
+          checkOutTime = setHours(startOfDay(now), 11, 30); // Mengatur jam 11:30 (11:30 AM) untuk Jumat
+          break;
+        default:
+          checkOutTime = null; // Tidak ada check-out untuk hari lainnya
+          break;
+      }
+  
+      // Periksa apakah sudah melewati waktu check-out atau belum
+      if (!checkOutTime || now < checkOutTime) {
+        console.log('Belum saatnya untuk Check-Out.');
+        return;
+      }
+  
       // Update data presensi ke dalam tabel absensi
       const { error } = await supabase
         .from('absensi')
@@ -99,7 +134,7 @@ const Presensi = () => {
 
   const handleLogout = () => {
     // Tambahkan logika logout di sini
-    console.log('Silahkan pulang.');
+    console.log("Silahkan pulang.");
   };
 
   if (!userData.nama_user || !userData.jenis_user) {
@@ -109,7 +144,9 @@ const Presensi = () => {
   return (
     <div>
       <h1>Presensi</h1>
-      <p>Selamat datang, {userData.nama_user} ({userData.jenis_user})</p>
+      <p>
+        Selamat datang, {userData.nama_user} ({userData.jenis_user})
+      </p>
       {presensiData && presensiData.check_out ? (
         <p>Kamu sudah absen. Silahkan pulang.</p>
       ) : (
