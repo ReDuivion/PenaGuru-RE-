@@ -2,6 +2,19 @@
 import { useState } from "react";
 import { RiStackFill } from "react-icons/ri";
 import {
+  Drawer,
+  DrawerBody,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerCloseButton,
+  useDisclosure,
+  RadioGroup,
+  Stack,
+  Radio,
+} from "@chakra-ui/react";
+import {
   Navbar,
   NavbarBrand,
   NavbarMenuToggle,
@@ -24,10 +37,14 @@ import { useRouter } from "next/navigation";
 import { FaUserCheck } from "react-icons/fa";
 import { FaUserGear } from "react-icons/fa6";
 import { RiAdminLine } from "react-icons/ri";
+import Directory from "./Directory";
+import DrawerNav from "./DrawerNav";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [placement, setPlacement] = useState("left");
   const router = useRouter();
   const menuItems = [
     "me",
@@ -72,57 +89,40 @@ export default function Header() {
         isMenuOpen={isMenuOpen}
         onMenuOpenChange={setIsMenuOpen}
       >
-        <NavbarContent className="sm:hidden" justify="start">
-          <NavbarMenuToggle
-            aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-          />
-        </NavbarContent>
-
-        <NavbarContent className="sm:hidden pr-3" justify="center">
+        <DrawerNav />
+        <NavbarContent className="sm:hidden pr-3" justify="start">
           <NavbarBrand>
-            <p
-              className="font-bold text-purple-500 cursor-pointer"
+            <Link
+              className="font-bold text-blue-500 cursor-pointer"
               onClick={handleHome}
             >
               PenaGuru
-            </p>
+            </Link>
           </NavbarBrand>
         </NavbarContent>
 
-        <NavbarContent className="hidden sm:flex gap-4" justify="center">
+        <NavbarContent className="hidden sm:flex gap-4" justify="start">
           <NavbarBrand>
-            <p
-              className="font-bold text-purple-500 cursor-pointer"
+            <Link
+              className="font-bold text-blue-500 cursor-pointer"
               onClick={handleHome}
             >
               PenaGuru
-            </p>
+            </Link>
           </NavbarBrand>
           <NavbarItem>
-            <Popover placement="bottom">
-              <PopoverTrigger>
-                <Link color="purple" className="btn">
-                  Integrations
-                </Link>
-              </PopoverTrigger>
-              <PopoverContent className="bg-white shadow-md p-4">
-                <div className="mb-4">
-                  <h2 className="text-sm font-semibold mb-2">
-                    Popover Content
-                  </h2>
-                  <RiStackFill />
-                </div>
-              </PopoverContent>
-            </Popover>
-          </NavbarItem>
-          <NavbarItem isActive>
-            <Link href="#" aria-current="page">
-              Customers
+            <Link className="" onClick={handleHome} underline="always">
+              Presensi
             </Link>
           </NavbarItem>
           <NavbarItem>
-            <Link color="purple" href="#">
-              Integrations
+            <Link href="#" aria-current="page" underline="always">
+              Statistik
+            </Link>
+          </NavbarItem>
+          <NavbarItem>
+            <Link color="purple" href="#" underline="always">
+              Contact Us
             </Link>
           </NavbarItem>
         </NavbarContent>

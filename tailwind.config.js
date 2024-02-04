@@ -22,6 +22,6 @@ module.exports = {
   darkMode: "class",
   plugins: [require("daisyui"), nextui({
     
-  })],
+  }), require("tailwindcss-animate")],
 
 };

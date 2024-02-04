@@ -72,6 +72,8 @@ export default function Home() {
       {/* <h1>Hello World</h1>
            <Carousels />
       <p>Last Activity (Local): {lastActivityLocal}</p> */}
+
+      
       <HeroSection />
     </div>
   );

@@ -4,17 +4,15 @@ import { FcAcceptDatabase } from "react-icons/fc";
 import { BsFillPersonLinesFill } from "react-icons/bs";
 const BottomNavigation = () => {
   return (
-    <div className="fixed bottom-0 left-0 w-full bg-slate-700 p-4 flex justify-around items-center md:hidden text-white">
-      <Link href="/">
+    <div className="fixed bottom-0 left-0 w-full bg-blue-500 p-4 flex justify-around items-center md:hidden text-white">
+      <Link href="/me">
         <FcAcceptDatabase size="2em" />
         Presensi
       </Link>
-      <Link href="/about">
-        
+      <Link href="/me">
         <BsFillPersonLinesFill size="2em" color="" />
-        List Guru
+        Saya
       </Link>
-  
     </div>
   );
 };
