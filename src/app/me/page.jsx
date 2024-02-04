@@ -228,7 +228,7 @@
 
 // export default MePage;
 
-import React from "react";
+
 import LandingPage from "../components/Me/LandingPage";
 
 export default function page() {
