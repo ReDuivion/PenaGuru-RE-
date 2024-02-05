@@ -236,7 +236,9 @@ export default function page() {
     <>
       <main>
         <div>
-          <section></section>
+          <section>
+            <LandingPage/>
+          </section>
         </div>
       </main>
     </>

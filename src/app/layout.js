@@ -16,7 +16,7 @@ export default function RootLayout({ children }) {
         <Providers>
           <Header />
           {children}
-          <BottomNavigation/>
+          <BottomNavigation className="pb-16"/>
         </Providers>
       </body>
     </html>

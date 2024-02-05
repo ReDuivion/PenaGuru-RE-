@@ -357,7 +357,7 @@ export default function EditProfile() {
   };
 
   return (
-    <div>
+    <div className="pb-96">
       <div className="card w-96 bg-base-100 shadow-xl mx-auto ">
         <div className="card-body">
           <h2 className="card-title mx-auto">

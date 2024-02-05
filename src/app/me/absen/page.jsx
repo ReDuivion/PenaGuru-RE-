@@ -1,7 +1,9 @@
-"use client";
+
+'use client'
 import { useEffect, useState } from "react";
 import { supabase } from "../../config/supabase";
 import { startOfDay, setHours, format } from "date-fns";
+import { Button, Input } from "@chakra-ui/react";
 
 const Presensi = () => {
   const [userData, setUserData] = useState({
@@ -9,6 +11,7 @@ const Presensi = () => {
     jenis_user: "",
   });
   const [presensiData, setPresensiData] = useState(null);
+  const [foto, setFoto] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -28,7 +31,7 @@ const Presensi = () => {
         }
 
         setUserData(profileData || {});
-        await checkPresensi(profileData.id); // Menggunakan ID pengguna dari profil untuk memeriksa presensi
+        await checkPresensi(profileData.id);
       } catch (error) {
         console.error("Error fetching profile data:", error.message);
       }
@@ -51,36 +54,68 @@ const Presensi = () => {
       if (data.length > 0) {
         setPresensiData(data[0]);
       } else {
-        setPresensiData(null); // Tidak ada presensi untuk hari ini
+        setPresensiData(null);
       }
     } catch (error) {
       console.error("Error checking presensi status:", error.message);
     }
   };
 
+  const eventFoto = (e) => {
+    const selectedFile = e.target.files[0];
+
+    if (selectedFile) {
+      setFoto(selectedFile);
+    } else {
+      console.log("Tidak Ada File Yang Dipilih");
+    }
+  };
+
   const handleCheckIn = async () => {
     try {
       const now = new Date();
-      const today = format(now, 'yyyy-MM-dd');
-      const checkInTime = setHours(startOfDay(now), 7); // Check-in pada jam 7 pagi setiap hari
-  
-      // Periksa apakah sudah lewat waktu check-in
+      const today = format(now, "yyyy-MM-dd");
+      const checkInTime = setHours(startOfDay(now), 7);
+
       if (now > checkInTime) {
-        console.log('Maaf, sudah melewati waktu check-in.');
+        console.log("Maaf, sudah melewati waktu check-in.");
         return;
       }
-  
-      // Simpan data presensi ke dalam tabel absensi
-      const { error } = await supabase
-        .from('absensi')
-        .insert([{ id_guru: userData.id, tanggal_absensi: today, check_in: format(now, 'yyyy-MM-dd HH:mm:ss') }]);
-      if (error) {
-        throw error;
+
+      if (!foto) {
+        console.log("Silahkan pilih gambar terlebih dahulu.");
+        return;
       }
-      console.log('Check-In berhasil ditambahkan.');
-      await checkPresensi(userData.id); // Periksa kembali presensi setelah penyisipan data baru
+
+      const { error: uploadError } = await supabase.storage
+        .from("guru")
+        .upload(`guru/${userData.id}/${today}`, foto);
+
+      if (uploadError) {
+        throw uploadError;
+      }
+
+      const imageUrl = `guru/${userData.id}/${today}`;
+
+      const { error: checkInError } = await supabase
+        .from("absensi")
+        .insert([
+          {
+            id_guru: userData.id,
+            tanggal_absensi: today,
+            check_in: format(now, "yyyy-MM-dd HH:mm:ss"),
+            foto_kegiatan: imageUrl,
+          },
+        ]);
+
+      if (checkInError) {
+        throw checkInError;
+      }
+
+      console.log("Check-In berhasil ditambahkan.");
+      await checkPresensi(userData.id);
     } catch (error) {
-      console.error('Error handling check-in:', error.message);
+      console.error("Error handling check-in:", error.message);
     }
   };
 
@@ -88,52 +123,48 @@ const Presensi = () => {
     try {
       const now = new Date();
       let checkOutTime;
-  
-      // Tentukan waktu check-out berdasarkan hari
+
       switch (now.getDay()) {
-        case 1: // Senin
-          checkOutTime = setHours(startOfDay(now), 15, 10); // Mengatur jam 15:10 (3:10 PM) untuk Senin
+        case 1:
+          checkOutTime = setHours(startOfDay(now), 15, 10);
           break;
-        case 2: // Selasa
-          checkOutTime = setHours(startOfDay(now), 15, 50); // Mengatur jam 15:50 (3:50 PM) untuk Selasa
+        case 2:
+          checkOutTime = setHours(startOfDay(now), 15, 50);
           break;
-        case 3: // Rabu dan Kamis
+        case 3:
         case 4:
-          checkOutTime = setHours(startOfDay(now), 14, 30); // Mengatur jam 14:30 (2:30 PM) untuk Rabu dan Kamis
+          checkOutTime = setHours(startOfDay(now), 14, 30);
           break;
-        case 5: // Jumat
-          checkOutTime = setHours(startOfDay(now), 11, 30); // Mengatur jam 11:30 (11:30 AM) untuk Jumat
+        case 5:
+          checkOutTime = setHours(startOfDay(now), 11, 30);
           break;
         default:
-          checkOutTime = null; // Tidak ada check-out untuk hari lainnya
+          checkOutTime = null;
           break;
       }
-  
-      // Periksa apakah sudah melewati waktu check-out atau belum
+
       if (!checkOutTime || now < checkOutTime) {
-        console.log('Belum saatnya untuk Check-Out.');
+        console.log("Belum saatnya untuk Check-Out.");
         return;
       }
-  
-      // Update data presensi ke dalam tabel absensi
+
       const { error } = await supabase
-        .from('absensi')
+        .from("absensi")
         .update({
-          check_out: format(now, 'yyyy-MM-dd HH:mm:ss') // Perbaikan: format tanggal sesuai dengan 'tanggal_absensi'
+          check_out: format(now, "yyyy-MM-dd HH:mm:ss"),
         })
-        .eq('id', presensiData.id);
+        .eq("id", presensiData.id);
       if (error) {
         throw error;
       }
-      console.log('Check-Out berhasil diperbarui.');
-      setPresensiData(null); // Mengatur presensiData kembali ke null untuk menyimpan check-in berikutnya
+      console.log("Check-Out berhasil diperbarui.");
+      setPresensiData(null);
     } catch (error) {
-      console.error('Error handling check-out:', error.message);
+      console.error("Error handling check-out:", error.message);
     }
   };
 
   const handleLogout = () => {
-    // Tambahkan logika logout di sini
     console.log("Silahkan pulang.");
   };
 
@@ -152,9 +183,14 @@ const Presensi = () => {
       ) : (
         <div>
           {presensiData && presensiData.check_in ? (
-            <button onClick={handleCheckOut}>Check-Out</button>
+            <div>
+              <Button onClick={handleCheckOut}>Check-Out</Button>
+            </div>
           ) : (
-            <button onClick={handleCheckIn}>Check-In</button>
+            <>
+              <Input type="file" accept="image/*" onChange={eventFoto} />
+              <Button onClick={handleCheckIn}>Check-In</Button>
+            </>
           )}
         </div>
       )}

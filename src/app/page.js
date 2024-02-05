@@ -4,6 +4,7 @@ import { supabase } from "./config/supabase.js";
 import moment from "moment-timezone";
 import Carousels from "./components/Home/Carousels.jsx";
 import HeroSection from "./components/Home/HeroSection.jsx";
+import Superiority from "./components/Home/Superiority.jsx";
 
 export default function Home() {
   const [lastActivityLocal, setLastActivityLocal] = useState("");
@@ -75,6 +76,7 @@ export default function Home() {
 
       
       <HeroSection />
+      <Superiority/>
     </div>
   );
 }

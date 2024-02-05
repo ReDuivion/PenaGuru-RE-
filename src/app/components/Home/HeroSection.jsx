@@ -1,7 +1,13 @@
 import React from "react";
 import { Button } from "@nextui-org/react";
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 const HeroSection = () => {
+  const router = useRouter()
+
+  function handleAbsensei() {
+    router.push("/me/absen")
+  }
   return (
     <div className="bg-blue-500 text-white py-20 px-4">
       <div className="max-w-4xl mx-auto text-center">
@@ -17,7 +23,7 @@ const HeroSection = () => {
             variant=""
             size="large"
             className="mr-4 bg-green-500"
-            onClick={() => console.log("Pindah ke halaman presensi")}
+            onClick={handleAbsensei}
           >
             Mulai Presensi
           </Button>

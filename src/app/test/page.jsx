@@ -58,7 +58,7 @@ export default function Page() {
 
       const { error } = await supabase.storage
         .from("foto")
-        .upload(`${foto.name}`, foto, {
+        .upload(`${foto.name}.jpg`, foto, {
           cacheControl: "3600",
           upsert: false,
         });
@@ -98,7 +98,7 @@ export default function Page() {
         <button onClick={kirimFoto}>Upload</button>
       </div>
       {fotoUrls.map((url, index) => (
-        <Image key={index} src={url} width={200} height={200} />
+        <img key={index} src={url} width={200} height={200} />
       ))}
     </>
   );

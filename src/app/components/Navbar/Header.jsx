@@ -39,6 +39,7 @@ import { FaUserGear } from "react-icons/fa6";
 import { RiAdminLine } from "react-icons/ri";
 import Directory from "./Directory";
 import DrawerNav from "./DrawerNav";
+import Draw from "./Draw";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -88,8 +89,8 @@ export default function Header() {
         isBordered
         isMenuOpen={isMenuOpen}
         onMenuOpenChange={setIsMenuOpen}
-      >
-        <DrawerNav />
+      > <Draw/>
+     
         <NavbarContent className="sm:hidden pr-3" justify="start">
           <NavbarBrand>
             <Link
