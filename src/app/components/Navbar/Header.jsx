@@ -112,17 +112,17 @@ export default function Header() {
             </Link>
           </NavbarBrand>
           <NavbarItem>
-            <Link className="" onClick={handleHome} underline="always">
+            <Link className="hover:text-lg hover:underline hover:cursor-pointer" href="/me/absen" underline="">
               Presensi
             </Link>
           </NavbarItem>
           <NavbarItem>
-            <Link href="#" aria-current="page" underline="always">
+            <Link className="hover:text-lg hover:underline hover:cursor-pointer" href="/me/statistik" aria-current="page" underline="">
               Statistik
             </Link>
           </NavbarItem>
           <NavbarItem>
-            <Link color="purple" href="#" underline="always">
+            <Link className="hover:text-lg hover:underline hover:cursor-pointer" color="purple" href="/contact" underline="">
               Contact Us
             </Link>
           </NavbarItem>

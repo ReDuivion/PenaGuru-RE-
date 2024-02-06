@@ -1,8 +1,17 @@
-'use client'
+"use client";
 import React, { useState, useEffect } from "react";
 import { supabase } from "../../config/supabase";
 import Image from "next/image";
-
+import {
+  Card,
+  CardHeader,
+  Box,
+  Heading,
+  CardBody,
+  Stack,
+  StackDivider,
+  Text,
+} from "@chakra-ui/react";
 export default function Statistik() {
   const [user, setUser] = useState(null);
   const [absensi, setAbsensi] = useState([]);
@@ -10,12 +19,15 @@ export default function Statistik() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const { data: { user }, error } = await supabase.auth.getUser();
+        const {
+          data: { user },
+          error,
+        } = await supabase.auth.getUser();
         if (error) {
           console.error("Error fetching user data:", error.message);
           return;
         }
-  
+
         setUser(user);
 
         if (!user || !user.email) {
@@ -71,29 +83,70 @@ export default function Statistik() {
 
   return (
     <>
-      <div className="stats shadow m-5">
-        {absensi.map((absen, index) => (
-          <div className="stat" key={index}>
-            <div className="stat-figure text-secondary"></div>
-            <div className="stat-title">Jam Masuk</div>
-            <div className="stat-value text-xl">{absen.check_in}</div>
+<main className="container mx-auto px-4">
+  <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 xl:grid-cols-4 gap-4">
+    <div className="sm:col-span-1 md:col-span-1 lg:col-span-1 xl:col-span-3 mb-8">
+      <Card margin="4" className="">
+        <CardHeader>
+          <Heading size="md" className="text-center">
+            PRELISENCE
+          </Heading>
+        </CardHeader>
 
-            <div className="stat-figure text-secondary"></div>
-            <div className="stat-title">Jam Keluar</div>
-            <div className="stat-value text-xl">{absen.check_out}</div>
+        <CardBody>
+          {absensi.map((absen, index) => (
+            <div className="mb-4" key={index}>
+              <Stack divider={<StackDivider />} spacing="4">
+                <Box>
+                  <Heading size="xs" textTransform="uppercase">
+                    Jam masuk
+                  </Heading>
+                  <Text pt="2" fontSize="sm">
+                    {absen.check_in}
+                  </Text>
+                </Box>
+                <Box>
+                  <Heading size="xs" textTransform="uppercase">
+                    Jam keluar
+                  </Heading>
+                  <Text pt="2" fontSize="sm">
+                    {absen.check_out}
+                  </Text>
+                </Box>
+                <Box>
+                  <Text pt="2" fontSize="sm">
+                    {absen.foto_kegiatan_url && (
+                      <div className="">
+                        <p>
+                          <Image
+                            width={500}
+                            height={500}
+                            src={absen.foto_kegiatan_url}
+                            alt="Kegiatan"
+                          />
+                        </p>
+                      </div>
+                    )}
+                  </Text>
+                </Box>
+              </Stack>
+            </div>
+          ))}
+        </CardBody>
+      </Card>
+    </div>
 
-            <div className="stat-figure text-secondary"></div>
-            <div className="stat-desc">Monday, January 10, 2024</div>
-
-            {/* Render image if URL is available */}
-            {absen.foto_kegiatan_url && (
-              <div className="stat-photo">
-                <Image width={200} height={200} src={absen.foto_kegiatan_url} alt="Kegiatan" />
-              </div>
-            )}
-          </div>
-        ))}
-      </div>
+    <div className="sm:col-span-1 md:col-span-1 lg:col-span-2 xl:col-span-1 mb-8">
+      <Card>
+        <CardBody>
+          <Text>
+            View a summary of all your customers over the last month.
+          </Text>
+        </CardBody>
+      </Card>
+    </div>
+  </div>
+</main>
     </>
   );
 }
