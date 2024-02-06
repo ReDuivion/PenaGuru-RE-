@@ -138,6 +138,9 @@ const Presensi = () => {
         case 5:
           checkOutTime = setHours(startOfDay(now), 11, 30);
           break;
+          case 6:
+            checkOutTime = setHours(startOfDay(now), 9, 10)
+            break;
         default:
           checkOutTime = null;
           break;

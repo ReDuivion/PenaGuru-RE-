@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ["rujhylbasedavctyitpz.supabase.co"],
+  
     remotePatterns: [
       {
         protocol: "https",
@@ -17,6 +17,10 @@ const nextConfig = {
         port: "",
         pathname: "/account123/**",
       },
+      {
+        protocol: "https",
+        hostname: "rujhylbasedavctyitpz.supabase.co",
+      }
     ],
   },
 };

@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import React, { useState, useEffect } from "react";
 import { supabase } from "../../config/supabase";
 import Image from "next/image";
@@ -10,12 +10,15 @@ export default function Statistik() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const { data: { user }, error } = await supabase.auth.getUser();
+        const {
+          data: { user },
+          error,
+        } = await supabase.auth.getUser();
         if (error) {
           console.error("Error fetching user data:", error.message);
           return;
         }
-  
+
         setUser(user);
 
         if (!user || !user.email) {
@@ -88,12 +91,32 @@ export default function Statistik() {
             {/* Render image if URL is available */}
             {absen.foto_kegiatan_url && (
               <div className="stat-photo">
-                <Image width={200} height={200} src={absen.foto_kegiatan_url} alt="Kegiatan" />
+                <Image
+                  width={500}
+                  height={200}
+                  src={absen.foto_kegiatan_url}
+                  alt="Kegiatan"
+                />
               </div>
             )}
           </div>
         ))}
       </div>
+
+      {absensi.map((absen, index1) => (
+        <div className="stat" key={index1}>
+          {absen.foto_kegiatan_url && (
+            <div className="stat-photo">
+              <Image
+                width={500}
+                height={200}
+                src={absen.foto_kegiatan_url}
+                alt="Kegiatan"
+              />
+            </div>
+          )}
+        </div>
+      ))}
     </>
   );
 }

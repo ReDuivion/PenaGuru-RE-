@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import GuruAuth from "../../middleware/guruAuth";
 import { supabase } from "../../config/supabase";
 import { useRouter } from "next/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -247,6 +248,8 @@ export default function EditProfile() {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
 
+    
+
     const updatedFields = {};
 
     if (userData.userType) {
@@ -286,6 +289,37 @@ export default function EditProfile() {
     }
 
     try {
+
+      const { data: existingStaffData, error: existingStaffError } =
+        await supabase
+          .from("staffs")
+          .select("*")
+          .eq("email", userEmail)
+          .single();
+
+      const { data: existingProfileData, error: existingProfileError } =
+        await supabase
+          .from("profiles")
+          .select("*")
+          .eq("email", userEmail)
+          .single();
+
+      if (existingStaffError || existingProfileError) {
+        console.error(
+          "Error checking existing staff or profile:",
+          existingStaffError?.message || existingProfileError?.message
+        );
+      }
+
+      if (existingStaffData || existingProfileData) {
+        console.log(
+          'Email sudah ada di tabel "staffs" atau "profiles", redirect ke /editstaff atau /edit'
+        );
+        // Redirect ke halaman yang sesuai
+        router.push(existingStaffData ? "/editstaff" : "/edit");
+        return;
+      }
+
       const { data: existingUserData, error: existingUserError } =
         await supabase
           .from("profiles")
@@ -357,47 +391,50 @@ export default function EditProfile() {
   };
 
   return (
-    <div className="pb-96">
-      <div className="card w-96 bg-base-100 shadow-xl mx-auto ">
-        <div className="card-body">
-          <h2 className="card-title mx-auto">
-            Edit Profile <FontAwesomeIcon icon={faPenToSquare} />
-          </h2>
-          <hr />
-          <div className="relative">
-            <Button
-              color=""
-              className="bg-green-600 text-white"
-              onPress={() => router.push("/me")}
-            >
-              <FontAwesomeIcon icon={faBackward} />
-            </Button>
-          </div>
-          <div className="avatar">
-            <div className="w-24 rounded-full mx-auto">
-              <img
-                src={
-                  avatarUrl || "https://images4.alphacoders.com/127/1276963.png"
-                }
-              />
-            </div>
-          </div>
+    <>
+      <GuruAuth>
+        <div className="pb-96">
+          <div className="card w-96 bg-base-100 shadow-xl mx-auto ">
+            <div className="card-body">
+              <h2 className="card-title mx-auto">
+                Edit Profile <FontAwesomeIcon icon={faPenToSquare} />
+              </h2>
+              <hr />
+              <div className="relative">
+                <Button
+                  color=""
+                  className="bg-green-600 text-white"
+                  onPress={() => router.push("/me")}
+                >
+                  <FontAwesomeIcon icon={faBackward} />
+                </Button>
+              </div>
+              <div className="avatar">
+                <div className="w-24 rounded-full mx-auto">
+                  <img
+                    src={
+                      avatarUrl ||
+                      "https://images4.alphacoders.com/127/1276963.png"
+                    }
+                  />
+                </div>
+              </div>
 
-          <p className="text-center">{userEmail}</p>
-          <div className="card-actions justify-end">
-            <form onSubmit={handleFormSubmit}>
-              <h1>Nama User:</h1>
-              <input
-                type="text"
-                name="nama_user"
-                value={userData.nama_user}
-                onChange={handleInputChange}
-                className="input input-bordered w-full max-w-xs"
-              />
+              <p className="text-center">{userEmail}</p>
+              <div className="card-actions justify-end">
+                <form onSubmit={handleFormSubmit}>
+                  <h1>Nama User:</h1>
+                  <input
+                    type="text"
+                    name="nama_user"
+                    value={userData.nama_user}
+                    onChange={handleInputChange}
+                    className="input input-bordered w-full max-w-xs"
+                  />
 
-              <br />
-              <h1>Pilih User</h1>
-              {/* <select
+                  <br />
+                  <h1>Pilih User</h1>
+                  {/* <select
                 name="jenis_user"
                 value={userData.jenis_user}
                 onChange={handleInputChange}
@@ -410,76 +447,78 @@ export default function EditProfile() {
                 <option>Guru/Staff</option>
                 <option>Kepala Sekolah</option>
               </select> */}
-              <select
-                name="jenis_user"
-                value={userData.jenis_user}
-                onChange={(e) => {
-                  handleInputChange(e);
-                  setUserType(e.target.value);
-                }}
-                className="select select-primary w-full max-w-full select-sm"
-              >
-                <option disabled selected>
-                  Pilih User
-                </option>
-                <option value="Staff">Staff</option>
-                <option value="Guru">Guru</option>
-                <option value="Admin">Admins</option>
-              </select>
+                  <select
+                    name="jenis_user"
+                    value={userData.jenis_user}
+                    onChange={(e) => {
+                      handleInputChange(e);
+                      setUserType(e.target.value);
+                    }}
+                    className="select select-primary w-full max-w-full select-sm"
+                  >
+                    <option disabled selected>
+                      Pilih User
+                    </option>
+                    <option value="Staff">Staff</option>
+                    <option value="Guru">Guru</option>
+                    <option value="Admin">Admins</option>
+                  </select>
 
-              <br />
-              <h1>Jurusan</h1>
-              <select
-                name="jurusan"
-                value={userData.jurusan}
-                onChange={handleInputChange}
-                className="select select-primary w-full max-w-full select-sm"
-              >
-                <option disabled selected>
-                  Pilih Jurusan
-                </option>
-                {jurusanOptions.map((option) => (
-                  <option key={option.id} value={option.nama_jurusan}>
-                    {option.nama_jurusan}
-                  </option>
-                ))}
-              </select>
+                  <br />
+                  <h1>Jurusan</h1>
+                  <select
+                    name="jurusan"
+                    value={userData.jurusan}
+                    onChange={handleInputChange}
+                    className="select select-primary w-full max-w-full select-sm"
+                  >
+                    <option disabled selected>
+                      Pilih Jurusan
+                    </option>
+                    {jurusanOptions.map((option) => (
+                      <option key={option.id} value={option.nama_jurusan}>
+                        {option.nama_jurusan}
+                      </option>
+                    ))}
+                  </select>
 
-              <h1>Kelas</h1>
-              <input
-                type="text"
-                name="kelas"
-                value={userData.kelas}
-                onChange={handleInputChange}
-                className="input input-bordered w-full max-w-xs"
-              />
-              <h1>Motto Hidup</h1>
-              <input
-                type="text"
-                name="motto"
-                value={userData.motto}
-                onChange={handleInputChange}
-                className="input input-bordered w-full max-w-xs"
-              />
-              <h1>Photo Profile</h1>
-              <input
-                type="file"
-                name="avatar"
-                className="file-input file-input-bordered w-full max-w-xs"
-                onChange={handleAvatarChange}
-              />
-              <Button
-                color="danger"
-                className="ml-20 mt-4"
-                variant="solid"
-                type="submit"
-              >
-                Simpan Perubahan
-              </Button>
-            </form>
+                  <h1>Kelas</h1>
+                  <input
+                    type="text"
+                    name="kelas"
+                    value={userData.kelas}
+                    onChange={handleInputChange}
+                    className="input input-bordered w-full max-w-xs"
+                  />
+                  <h1>Motto Hidup</h1>
+                  <input
+                    type="text"
+                    name="motto"
+                    value={userData.motto}
+                    onChange={handleInputChange}
+                    className="input input-bordered w-full max-w-xs"
+                  />
+                  <h1>Photo Profile</h1>
+                  <input
+                    type="file"
+                    name="avatar"
+                    className="file-input file-input-bordered w-full max-w-xs"
+                    onChange={handleAvatarChange}
+                  />
+                  <Button
+                    color="danger"
+                    className="ml-20 mt-4"
+                    variant="solid"
+                    type="submit"
+                  >
+                    Simpan Perubahan
+                  </Button>
+                </form>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
+      </GuruAuth>
+    </>
   );
 }
