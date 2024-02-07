@@ -1,12 +1,19 @@
 "use client";
 import React from "react";
-import {
-  Input,
-} from "@chakra-ui/react";
+import { Input } from "@chakra-ui/react";
 
-import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure} from "@nextui-org/react";
+import {
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Button,
+  useDisclosure,
+} from "@nextui-org/react";
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { startOfDay, setHours, format } from "date-fns";
 import { supabase } from "../../config/supabase";
 export default function LandingPage() {
   const [userData, setUserData] = useState({
@@ -15,8 +22,8 @@ export default function LandingPage() {
   });
   const [presensiData, setPresensiData] = useState(null);
   const [foto, setFoto] = useState(null);
-  const [placement, setPlacement] = useState('bottom')
- const [size, setSize] = useState('md')
+  const [placement, setPlacement] = useState("bottom");
+  const [size, setSize] = useState("md");
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -187,9 +194,7 @@ export default function LandingPage() {
           <div className="">
             <h1 className="text-2xl">{userData.email}</h1>
             <h1 className="mb-2">({userData.nama_user})</h1>
-            <h1 className="text-2xl">
-              {userData.jenis_user}
-            </h1>
+            <h1 className="text-2xl">{userData.jenis_user}</h1>
           </div>
           <h1 className="btn btn-ghost ">Edit Profile</h1>
         </div>
@@ -279,50 +284,53 @@ export default function LandingPage() {
         Show More
       </Link>
 
-      <Modal 
-        size={size} 
-        isOpen={isOpen} 
-        onClose={onClose} 
-      >
+      <Modal size={size} isOpen={isOpen} onClose={onClose}>
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-1"> {presensiData && presensiData.check_out ? (
-              <p>Silahkan Pulang.</p>
-            ) : (
-              <div>
-                {presensiData && presensiData.check_in ? (
-                  <div>
-                    <p>Silahkan CheckOut</p>
-                  </div>
+              <ModalHeader className="flex flex-col gap-1">
+                {" "}
+                {presensiData && presensiData.check_out ? (
+                  <p>Silahkan Pulang.</p>
                 ) : (
-                  <>
-                    <p>Silahkan CheckIn</p>
-                  </>
+                  <div>
+                    {presensiData && presensiData.check_in ? (
+                      <div>
+                        <p>Silahkan CheckOut</p>
+                      </div>
+                    ) : (
+                      <>
+                        <p>Silahkan CheckIn</p>
+                      </>
+                    )}
+                  </div>
                 )}
-              </div>
-            )}</ModalHeader>
+              </ModalHeader>
               <ModalBody>
-              <h1>Presensi</h1>
-            <p>
-              Selamat datang, {userData.nama_user} ({userData.jenis_user})
-            </p>
-            {presensiData && presensiData.check_out ? (
-              <p>Kamu sudah absen. Silahkan pulang.</p>
-            ) : (
-              <div>
-                {presensiData && presensiData.check_in ? (
-                  <div>
-                    <Button onClick={handleCheckOut}>Check-Out</Button>
-                  </div>
+                <h1>Presensi</h1>
+                <p>
+                  Selamat datang, {userData.nama_user} ({userData.jenis_user})
+                </p>
+                {presensiData && presensiData.check_out ? (
+                  <p>Kamu sudah absen. Silahkan pulang.</p>
                 ) : (
-                  <>
-                    <Input type="file" accept="image/*" onChange={eventFoto} />
-                    <Button onClick={handleCheckIn}>Check-In</Button>
-                  </>
+                  <div>
+                    {presensiData && presensiData.check_in ? (
+                      <div>
+                        <Button onClick={handleCheckOut}>Check-Out</Button>
+                      </div>
+                    ) : (
+                      <>
+                        <Input
+                          type="file"
+                          accept="image/*"
+                          onChange={eventFoto}
+                        />
+                        <Button onClick={handleCheckIn}>Check-In</Button>
+                      </>
+                    )}
+                  </div>
                 )}
-              </div>
-            )}
               </ModalBody>
               <ModalFooter>
                 <Button color="danger" variant="light" onPress={onClose}>
@@ -336,8 +344,6 @@ export default function LandingPage() {
           )}
         </ModalContent>
       </Modal>
-
-      
     </>
   );
 }
