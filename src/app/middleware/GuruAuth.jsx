@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "../config/supabase.js";
 
-const AdminRouteProtection = ({ children }) => {
+const GuruAuth = ({ children }) => {
   const router = useRouter();
 
   useEffect(() => {
@@ -12,14 +12,14 @@ const AdminRouteProtection = ({ children }) => {
       try {
         const { user } = await supabase.auth.user();
         const { data: adminData, error: adminError } = await supabase
-          .from("staffs")
+          .from("profiles")
           .select("*")
           .eq("email", user.email)
           .single();
 
         if (adminError || !adminData) {
           console.error("Error checking admin access:", adminError);
-          router.push("/unauthorized");
+          router.push("/login");
         }
       } catch (error) {
         console.error("Error checking admin access:", error);
@@ -33,4 +33,4 @@ const AdminRouteProtection = ({ children }) => {
   return <>{children}</>;
 };
 
-export default AdminRouteProtection;
+export default GuruAuth;
