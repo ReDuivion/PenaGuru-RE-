@@ -1,6 +1,5 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import GuruAuth from "../../middleware/guruAuth";
 import { supabase } from "../../config/supabase";
 import { useRouter } from "next/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -392,7 +391,7 @@ export default function EditProfile() {
 
   return (
     <>
-      <GuruAuth>
+      
         <div className="pb-96">
           <div className="card w-96 bg-base-100 shadow-xl mx-auto ">
             <div className="card-body">
@@ -518,7 +517,7 @@ export default function EditProfile() {
             </div>
           </div>
         </div>
-      </GuruAuth>
+    
     </>
   );
 }
