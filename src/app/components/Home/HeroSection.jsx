@@ -6,7 +6,7 @@ const HeroSection = () => {
   const router = useRouter()
 
   function handleAbsensei() {
-    router.push("/me/absen")
+    router.push("/me")
   }
   return (
     <div className="bg-blue-500 text-white py-20 px-4">
