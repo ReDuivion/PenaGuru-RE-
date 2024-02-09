@@ -9,7 +9,7 @@ export default function notFound() {
         <Image src={pagenotfound} />
         <div className="">
         <h1 className="flex justify-center text-3xl font-bold text-sky-500 mt-3">Page Not Found!</h1>
-        <h1 className="mt-3">Page yang anda cari mungkin telah dipindahkan, dihapus, atau mungkin tidak pernah ada!</h1>
+        <h1 className="text-center mt-3">Page yang anda cari mungkin telah dipindahkan, dihapus, atau mungkin tidak pernah ada!</h1>
         </div>
       </main>
     </main>
