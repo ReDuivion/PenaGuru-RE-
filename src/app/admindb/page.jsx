@@ -1,6 +1,7 @@
 "use client";
 // pages/admin-dashboard.js
 import { BiSolidDashboard } from "react-icons/bi";
+import { TbBell } from "react-icons/tb";
 import { useEffect, useState } from "react";
 import { supabase } from "../config/supabase.js";
 import { MdCoPresent } from "react-icons/md";
@@ -181,6 +182,13 @@ const AdminDashboard = () => {
                 >
                   <FcStatistics size={"2em"} />
                   Statistik Guru
+                </Link>
+                <Link
+                  className="btn flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition ease-in-out delay-150 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50 mb-2"
+                  href="/admindb/nontifikasi"
+                >
+                  <TbBell  size={"2em"} />
+                  Notifikasi
                 </Link>
 
                 <Link
