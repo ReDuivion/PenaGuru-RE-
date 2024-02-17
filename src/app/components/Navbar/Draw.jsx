@@ -109,8 +109,7 @@ export default function Draw() {
                   PenaGuru
                 </p>
               </NavbarBrand>
-              <GoX
-                size="1.5em"
+              <DrawerCloseButton
                 className="cursor-pointer sm:block md:block lg:hidden xl:hidden"
                 onClick={onClose}
               />
@@ -149,23 +148,23 @@ export default function Draw() {
             <TfiWorld
               onClick={handleWeb}
               size="1.5em"
-              className="cursor-pointer"
+              className="cursor-pointer mr-1"
+            />
+            <TiSocialYoutube
+              onClick={handleYt}
+              size="2em"
+              className="cursor-pointer mr-1"
             />
             <TiSocialInstagram
               onClick={handleIg}
               size="1.5em"
-              className="cursor-pointer"
+              className="cursor-pointer mr-48"
             />
-            <TiSocialYoutube
-              onClick={handleYt}
-              size="1.5em"
-              className="cursor-pointer"
-            />
-            <TiSocialFacebook
+            {/* <TiSocialFacebook
               onClick={handleFb}
               size="1.5em"
               className="cursor-pointer"
-            />
+            /> */}
           </DrawerFooter>
         </DrawerContent>
       </Drawer>

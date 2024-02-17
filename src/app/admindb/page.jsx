@@ -12,6 +12,7 @@ import { Button, Input } from "@nextui-org/react";
 import TeacherCard from "../components/Guru/TeacherCard.jsx";
 import moment from "moment";
 import Link from "next/link";
+import { MdOutlineMarkEmailUnread } from "react-icons/md";
 import { BsFillPersonLinesFill } from "react-icons/bs";
 import AdminRouteProtection from "../components/Admin/AdminRouterProtection.jsx";
 import BottomNavigation from "../components/Mobile/BotNav.jsx";
@@ -199,9 +200,9 @@ const AdminDashboard = () => {
                 </Link>
                 <Link
                   className="btn flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition ease-in-out delay-150 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50 mb-2"
-                  href="#"
-                >
-                  Menu 1
+                  href="admindb/email"
+                ><MdOutlineMarkEmailUnread size={"2em"}/>
+                  Email
                 </Link>
 
                 {/* Link href="/" passHref>

@@ -3,13 +3,37 @@
 import { useState, useEffect } from "react";
 import { supabase } from "../../config/supabase";
 import { useRouter } from "next/navigation";
-import { Input, Button, Card, CardBody, Spacer } from "@nextui-org/react";
 import { FaRegUser } from "react-icons/fa";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { v4 as uuidv4 } from "uuid";
+import {
+  Button,
+  Card,
+  CardHeader,
+  CardBody,
+  CardFooter,
+  Divider,
+  Link,
+  Image,
+  Input,
+  Spacer,
+} from "@nextui-org/react";
+import {
+  faCoffee,
+  faBackward,
+  faGear,
+  faUser,
+  faUserGroup,
+  faMagnifyingGlass,
+  faPlus,
+  faPenToSquare,
+} from "@fortawesome/free-solid-svg-icons";
 export default function EditAdmin() {
   const [userEmail, setUserEmail] = useState(null);
   const [userData, setUserData] = useState({
     nama_user: "",
     jenis_user: "",
+    motto: "",
   });
   const router = useRouter();
 
@@ -57,7 +81,7 @@ export default function EditAdmin() {
             'Email sudah ada di tabel "admins" atau "profiles", redirect ke /editstaff atau /edit'
           );
           // Redirect ke halaman yang sesuai
-          router.push(existingStaffData ? "/editstaff" : "/edit");
+          router.push(existingStaffData ? "/me/editstaff" : "/me/edit");
           return;
         }
 
@@ -123,7 +147,7 @@ export default function EditAdmin() {
           'Email sudah ada di tabel "admins" atau "profiles", redirect ke /editstaff atau /edit'
         );
         // Redirect ke halaman yang sesuai
-        router.push(existingStaffData ? "/editstaff" : "/edit");
+        router.push(existingStaffData ? "/me/editstaff" : "/me/edit");
         return;
       }
 
@@ -149,6 +173,7 @@ export default function EditAdmin() {
           .update({
             nama_user: userData.nama_user,
             jenis_user: userData.jenis_user,
+            motto: userData.motto,
             // Add more fields here...
           })
           .eq("email", userEmail);
@@ -167,6 +192,7 @@ export default function EditAdmin() {
             email: userEmail,
             nama_user: userData.nama_user,
             jenis_user: userData.jenis_user,
+            motto: userData.motto,
             // Add more fields here...
           },
         ]);
@@ -189,48 +215,63 @@ export default function EditAdmin() {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen">
-      <Card className="max-w-[400px]">
-        <CardBody>
-          <div className="text-center">
-            <FaRegUser size={48} />
-            <Spacer y={1} />
-            <p>{userEmail}</p>
+    <div className="pb-96">
+      <div className="card w-96 bg-base-100 shadow-xl mx-auto ">
+        <div className="card-body">
+          <div className="relative w-3 h-3">
+            <FontAwesomeIcon
+              icon={faBackward}
+              className="text-green-600 cursor-pointer"
+              onPress={() => router.push("/me")}
+            />
           </div>
-          <Spacer y={2} />
-          <form onSubmit={handleFormSubmit} className="max-w-[600px]">
-            <div className="mb-4">
-              <label className="block mb-2">
-                Nama User:
-                <Input
-                  className="mt-1"
-                  type="text"
-                  name="nama_user"
-                  value={userData.nama_user}
-                  onChange={handleInputChange}
-                />
-              </label>
+          <h2 className="card-title mx-auto">
+            Edit Profile <FontAwesomeIcon icon={faPenToSquare} />
+          </h2>
+          <hr />  
+
+          <div className="card w-full h-32 mx-auto bg-gradient-to-r from-indigo-700  via-blue-500 v to-cyan-400  mb-8">
+            <p className="font-bold text-2xl mt-8  text-sky-300 text-center">Pena Guru</p>
+            <div className="avatar item-center justify-center text-center">
+              <div class="avatar placeholder ">
+                <div class="bg-blue-700 text-white rounded-full w-24">
+                  <span class="text-4xl">U</span>
+                </div>
+              </div>
             </div>
-            <div className="mb-4">
-              <label className="block mb-2">
-                Jenis User:
-                <Input
-                  className="mt-1"
-                  type="text"
-                  name="jenis_user"
-                  value={userData.jenis_user}
-                  onChange={handleInputChange}
-                />
-              </label>
-            </div>
-            <div className="text-center">
-              <Button type="submit" variant="contained" color="primary">
+          </div>
+
+          <p className="text-center">{userEmail}</p>
+          <div className="card-actions justify-end">
+            <form onSubmit={handleFormSubmit}>
+              <h1>Nama User:</h1>
+              <input
+                type="text"
+                name="nama_user"
+                value={userData.nama_user}
+                onChange={handleInputChange}
+                className="input input-bordered w-full max-w-xs"
+              />
+              <h1>Motto Hidup</h1>
+              <input
+                type="text"
+                name="motto"
+                value={userData.motto}
+                onChange={handleInputChange}
+                className="input input-bordered w-full max-w-xs"
+              />
+              <Button
+                color="danger"
+                className=" mt-4 w-full"
+                variant="solid"
+                type="submit"
+              >
                 Simpan Perubahan
               </Button>
-            </div>
-          </form>
-        </CardBody>
-      </Card>
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
