@@ -23,8 +23,8 @@ const Presensi = () => {
         const { data: profileData, error: profileError } = await supabase
           .from("profiles")
           .select("*")
-          .eq("email", user.email)
-          .single();
+          .eq("email", user.email) 
+          .single();     
 
         if (profileError) {
           throw new Error(profileError.message);
