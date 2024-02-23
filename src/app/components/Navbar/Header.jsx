@@ -126,6 +126,7 @@ export default function Header() {
               Contact Us
             </Link>
           </NavbarItem>
+          
         </NavbarContent>
 
         <NavbarContent justify="end">

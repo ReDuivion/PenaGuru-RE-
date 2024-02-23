@@ -24,6 +24,9 @@ export default function LandingPage() {
   const [foto, setFoto] = useState(null);
   const [placement, setPlacement] = useState("bottom");
   const [size, setSize] = useState("md");
+  const [user, setUser] = useState(null);
+  const [absensi, setAbsensi] = useState([]);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -41,11 +44,29 @@ export default function LandingPage() {
           throw new Error(profileError.message);
         }
 
-        setUserData(profileData || {});
+       setUserData(profileData || {});
         await checkPresensi(profileData.id);
-      } catch (error) {
+          const guruId = profileData?.id;
+        if (!guruId) {
+          console.error("Guru ID is null or undefined.");
+          return;
+        }
+        const { data: absensiData, error: absensiError } = await supabase
+        .from("absensi")
+        .select("*")
+        .eq("id_guru", guruId)
+        .order("tanggal_absensi", { ascending: false }) 
+        .limit(2);
+    if (absensiError) {
+      console.error("Error fetching absensi data:", absensiError);
+      return;
+    }
+
+    setAbsensi(absensiData);
+  } catch (error) {
         console.error("Error fetching profile data:", error.message);
       }
+     
     };
 
     fetchData();
@@ -183,8 +204,14 @@ export default function LandingPage() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
+
+    
+      <div className="flex flex-col lg:flex-row justify-center lg:justify-start">
+        <div className="ml-5 lg:mr-5 border border-md  w-full lg:w-1/2 rounded-lg my-5 justify-center text-center pb-5 shadow-lg">
+
       <div className="flex flex-col lg:flex-row justify-center lg:justify-start mx-5">
         <div className="border border-md w-full lg:mr-5 lg:w-1/2 mt-5 lg:mb-5 justify-center text-center pb-5 shadow-lg rounded-lg">
+
           <h1 className="text-5xl font-bold mt-10">Welcome Back</h1>
           <div className="avatar placeholder my-8">
             <div className="bg-purple-600 text-white rounded-full w-24">
@@ -243,23 +270,34 @@ export default function LandingPage() {
           </div>
         </div>
       </div>
-
+      {absensi.map((absen, index) => (
+            <div className="mb-4" key={index}>
       <div class="border border-md shadow-md rounded-md mx-5 mb-5">
         <div className="lg:flex">
           <div className="stat place-items-center">
             <div class="stat-figure text-secondary"></div>
             <div class="stat-title">Jam Masuk</div>
+            <div class="stat-value text-xl"> {absen.check_in}</div>
             <div class="stat-value text-large sm:text-xl md:text-xl lg:text-xl xl:text-xl">2024-02-08T06:31:19+07:00</div>
           </div>
           <div className="stat place-items-center">
             <div class="stat-figure text-secondary"></div>
             <div class="stat-title">Jam Keluar</div>
+            <div class="stat-value text-xl"> {absen.check_out}</div>
             <div class="stat-value text-large sm:text-xl md:text-xl lg:text-xl xl:text-xl">2024-02-08T15:54:05+07:00</div>
             <div class="stat-figure text-secondary"></div>
           </div>
-          <div class="stat-desc m-3">Monday, January 10, 2024</div>
         </div>
       </div>
+
+</div>
+      ))}
+      <Link
+        href="/me/statistik"
+        className="underline text-blue-500 flex justify-center"
+      >
+        Show More
+      </Link>
       <div class="border border-md shadow-md rounded-md mx-5 mb-5">
         <div className="lg:flex">
           <div className="stat place-items-center">
@@ -285,7 +323,6 @@ export default function LandingPage() {
           Lihat Lebih Banyak
         </Link>
       </div>
-      
 
       <Modal size={size} isOpen={isOpen} onClose={onClose}>
         <ModalContent>

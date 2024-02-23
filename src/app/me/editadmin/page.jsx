@@ -3,7 +3,31 @@
 import { useState, useEffect } from "react";
 import { supabase } from "../../config/supabase";
 import { useRouter } from "next/navigation";
-import { Input } from "@nextui-org/react";
+import { FaRegUser } from "react-icons/fa";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { v4 as uuidv4 } from "uuid";
+import {
+  Button,
+  Card,
+  CardHeader,
+  CardBody,
+  CardFooter,
+  Divider,
+  Link,
+  Image,
+  Input,
+  Spacer
+} from "@nextui-org/react";
+import {
+  faCoffee,
+  faBackward,
+  faGear,
+  faUser,
+  faUserGroup,
+  faMagnifyingGlass,
+  faPlus,
+  faPenToSquare,
+} from "@fortawesome/free-solid-svg-icons";
 export default function EditAdmin() {
   const [userEmail, setUserEmail] = useState(null);
   const [userData, setUserData] = useState({
@@ -188,33 +212,63 @@ export default function EditAdmin() {
   };
 
   return (
-    <div>
-      <h1>{userEmail}</h1>
-      <h1>Edit Profile</h1>
-      <form onSubmit={handleFormSubmit}>
-        <label>
-          Nama User:
-          <input
-            type="text"
-            name="nama_user"
-            value={userData.nama_user}
-            onChange={handleInputChange}
-          />
-        </label>
-        <br />
-        <label>
-          Jenis User:
-          <input
-            type="text"
-            name="jenis_user"
-            value={userData.jenis_user}
-            onChange={handleInputChange}
-          />
-        </label>
-        <br />
-        {/* Add more input fields here... */}
-        <button type="submit">Simpan Perubahan</button>
-      </form>
+    <div className="pb-96">
+      <div className="card w-96 bg-base-100 shadow-xl mx-auto ">
+        <div className="card-body">
+          <div className="relative w-3 h-3">
+            <FontAwesomeIcon
+              icon={faBackward}
+              className="text-green-600 cursor-pointer"
+              onPress={() => router.push("/me")}
+            />
+          </div>
+          <h2 className="card-title mx-auto">
+            Edit Profile <FontAwesomeIcon icon={faPenToSquare} />
+          </h2>
+          <hr />  
+
+          <div className="card w-full h-32 mx-auto bg-gradient-to-r from-indigo-700  via-blue-500 v to-cyan-400  mb-8">
+            <p className="font-bold text-2xl mt-8  text-sky-300 text-center">Pena Guru</p>
+            <div className="avatar item-center justify-center text-center">
+              <div class="avatar placeholder ">
+                <div class="bg-blue-700 text-white rounded-full w-24">
+                  <span class="text-4xl">U</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <p className="text-center">{userEmail}</p>
+          <div className="card-actions justify-end">
+            <form onSubmit={handleFormSubmit}>
+              <h1>Nama User:</h1>
+              <input
+                type="text"
+                name="nama_user"
+                value={userData.nama_user}
+                onChange={handleInputChange}
+                className="input input-bordered w-full max-w-xs"
+              />
+              <h1>Motto Hidup</h1>
+              <input
+                type="text"
+                name="motto"
+                value={userData.motto}
+                onChange={handleInputChange}
+                className="input input-bordered w-full max-w-xs"
+              />
+              <Button
+                color="danger"
+                className=" mt-4 w-full"
+                variant="solid"
+                type="submit"
+              >
+                Simpan Perubahan
+              </Button>
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
