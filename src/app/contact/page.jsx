@@ -24,14 +24,14 @@ export default function page() {
     <>
       <div>
         <div className="flex">
-          <div className="bg-sky-500 w-screen h-screen md:w-1/2 lg:w-1/2 xl:w-1/2 md:mr-3">
-            <h1 className="font-bold text-4xl text-white ml-5 mt-5 text-center md:text-left">
+          <div className="bg-sky-500 w-screen pb-48 sm:pb-0 md:w-1/2 lg:w-1/2 xl:w-1/2 md:mr-3">
+            <h1 className="font-bold text-4xl text-white sm:ml-5 mt-5 text-center md:text-left">
               Contact Us!
             </h1>
             <h1 className="text-white mx-5 mt-3 text-lg text-center md:text-left">
               Mengalami bug atau error? Kebingungan? Memiliki saran?
             </h1>
-            <h1 className="text-white ml-5 mt- text-xl font-bold text-center md:text-left">
+            <h1 className="text-white sm:ml-5 text-xl font-bold text-center md:text-left">
               Kontak saja kami!
             </h1>
             <h1 className="text-white ml-5 mt-3 text-lg opacity-75 hover:opacity-100">
