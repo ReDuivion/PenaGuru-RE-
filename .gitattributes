@@ -1,0 +1,9 @@
+* text=auto eol=lf
+
+*.javascript diff=javascript
+*.css diff=css
+
+
+/.github export-ignore
+CHANGELOG.md export-ignore
+.styleci.yml export-ignore
