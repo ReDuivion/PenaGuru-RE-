@@ -186,7 +186,7 @@ const AdminDashboard = () => {
                 </Link>
                 <Link
                   className="btn flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition ease-in-out delay-150 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50 mb-2"
-                  href="/admindb/nontifikasi"
+                  href="/admindb/notifikasi"
                 >
                   <TbBell  size={"2em"} />
                   Notifikasi

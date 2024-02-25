@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { Input } from "@chakra-ui/react";
+import { Input, useToast } from "@chakra-ui/react";
 
 import {
   Modal,
@@ -15,6 +15,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { startOfDay, setHours, format } from "date-fns";
 import { supabase } from "../../config/supabase";
+import { toast } from "react-toastify";
 export default function LandingPage() {
   const [userData, setUserData] = useState({
     nama_user: "",
@@ -26,7 +27,7 @@ export default function LandingPage() {
   const [size, setSize] = useState("md");
   const [user, setUser] = useState(null);
   const [absensi, setAbsensi] = useState([]);
-
+  const toast = useToast();
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -44,29 +45,28 @@ export default function LandingPage() {
           throw new Error(profileError.message);
         }
 
-       setUserData(profileData || {});
+        setUserData(profileData || {});
         await checkPresensi(profileData.id);
-          const guruId = profileData?.id;
+        const guruId = profileData?.id;
         if (!guruId) {
           console.error("Guru ID is null or undefined.");
           return;
         }
         const { data: absensiData, error: absensiError } = await supabase
-        .from("absensi")
-        .select("*")
-        .eq("id_guru", guruId)
-        .order("tanggal_absensi", { ascending: false }) 
-        .limit(2);
-    if (absensiError) {
-      console.error("Error fetching absensi data:", absensiError);
-      return;
-    }
+          .from("absensi")
+          .select("*")
+          .eq("id_guru", guruId)
+          .order("tanggal_absensi", { ascending: false })
+          .limit(2);
+        if (absensiError) {
+          console.error("Error fetching absensi data:", absensiError);
+          return;
+        }
 
-    setAbsensi(absensiData);
-  } catch (error) {
+        setAbsensi(absensiData);
+      } catch (error) {
         console.error("Error fetching profile data:", error.message);
       }
-     
     };
 
     fetchData();
@@ -180,7 +180,6 @@ export default function LandingPage() {
         console.log("Belum saatnya untuk Check-Out.");
         return;
       }
-
       const { error } = await supabase
         .from("absensi")
         .update({
@@ -197,6 +196,28 @@ export default function LandingPage() {
     }
   };
 
+  // presensiData && presensiData.check_in ?(
+  //   toast({
+  //     title: "Anda sudah Absen",
+  //     description: "Silahkan tutup pesan ini",
+  //     status: "success",
+  //     duration: 5000,
+  //     isClosable: true,
+  //     position: 'top',
+
+  //   })
+  // ):(
+  //   toast({
+  //     title: "Silahkan absen",
+  //     description: "Anda tidak dapat menutup pesan ini jika tidak absen",
+  //     status: "error",
+  //     duration: null,
+  //     isClosable: false,
+  //     position: 'top',
+  //   })
+
+  // );
+
   const handleLogout = () => {
     console.log("Silahkan pulang.");
   };
@@ -204,7 +225,17 @@ export default function LandingPage() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
-    
+      {presensiData && presensiData.check_in ? (
+        <></>
+      ) : (
+        <>
+          <div className="fixed top-2 right-0  p-16 ">
+            <div class=" w-full max-w-xs p-4 mb-4 bg-red-500 text-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800">
+              <p>Silahkan CheckIn</p>
+            </div>
+          </div>
+        </>
+      )}
       <div className="flex flex-col lg:flex-row justify-center lg:justify-start">
         <div className="ml-5 lg:mr-5 border border-md  w-full lg:w-1/2 rounded-lg my-5 justify-center text-center pb-5 shadow-lg">
           <h1 className="text-5xl font-bold mt-10">Welcome Back</h1>
@@ -266,23 +297,23 @@ export default function LandingPage() {
         </div>
       </div>
       {absensi.map((absen, index) => (
-            <div className="mb-4" key={index}>
-      <div class="border border-md shadow-md rounded-md mx-5 mb-5">
-        <div className="lg:flex">
-          <div className="stat place-items-center">
-            <div class="stat-figure text-secondary"></div>
-            <div class="stat-title">Jam Masuk</div>
-            <div class="stat-value text-xl"> {absen.check_in}</div>
-          </div>
-          <div className="stat place-items-center">
-            <div class="stat-figure text-secondary"></div>
-            <div class="stat-title">Jam Keluar</div>
-            <div class="stat-value text-xl"> {absen.check_out}</div>
-            <div class="stat-figure text-secondary"></div>
+        <div className="mb-4" key={index}>
+          <div class="border border-md shadow-md rounded-md mx-5 mb-5">
+            <div className="lg:flex">
+              <div className="stat place-items-center">
+                <div class="stat-figure text-secondary"></div>
+                <div class="stat-title">Jam Masuk</div>
+                <div class="stat-value text-xl"> {absen.check_in}</div>
+              </div>
+              <div className="stat place-items-center">
+                <div class="stat-figure text-secondary"></div>
+                <div class="stat-title">Jam Keluar</div>
+                <div class="stat-value text-xl"> {absen.check_out}</div>
+                <div class="stat-figure text-secondary"></div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-</div>
       ))}
       <Link
         href="/me/statistik"
