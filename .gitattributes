@@ -2,6 +2,7 @@
 
 *.javascript diff=javascript
 *.css diff=css
+*.json diff=json
 
 
 /.github export-ignore
