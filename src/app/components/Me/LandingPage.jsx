@@ -196,6 +196,9 @@ export default function LandingPage() {
     }
   };
 
+   
+
+     
   // presensiData && presensiData.check_in ?(
   //   toast({
   //     title: "Anda sudah Absen",
@@ -229,7 +232,7 @@ export default function LandingPage() {
         <></>
       ) : (
         <>
-          <div className="fixed top-2 right-0  p-16 ">
+          <div className="fixed  top-2 right-0  p-16 ">
             <div class=" w-full max-w-xs p-4 mb-4 bg-red-500 text-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800">
               <p>Silahkan CheckIn</p>
             </div>

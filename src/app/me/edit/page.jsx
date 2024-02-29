@@ -403,7 +403,7 @@ export default function EditProfile() {
             <FontAwesomeIcon
               icon={faBackward}
               className="text-green-600 cursor-pointer"
-              onPress={() => router.push("/me")}
+              onClick={() => router.push("/me")}
             />
           </div>
           <h2 className="card-title mx-auto">
