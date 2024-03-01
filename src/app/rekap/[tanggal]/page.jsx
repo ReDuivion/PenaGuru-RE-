@@ -15,7 +15,7 @@ export default function RekapTanggalPage() {
   const [error, setError] = useState(null);
   const [isExpanded, setIsExpanded] = useState(null);
   const pathname = usePathname();
-  const [filter, setFilter] = useState("");
+
 
   useEffect(() => {
     async function fetchAbsensi() {
@@ -30,10 +30,8 @@ export default function RekapTanggalPage() {
         `)
           .eq("tanggal_absensi", decodedTanggal);
 
-        const filteredAbsensi = absensiData.filter(
-          (item) => item.check_in && item.check_out
-        );
-        setAbsensi(filteredAbsensi);
+    
+        setAbsensi(absensiData);
       } catch (error) {
         console.error(
           `Error fetching absensi for tanggal ${tanggal}:`,
@@ -56,13 +54,7 @@ export default function RekapTanggalPage() {
     <div>
     <h1 className="text-2xl font-bold mb-4 m-4">Rekap Absensi Tanggal</h1>
        <div className="flex justify-end mb-4 mr-4">
-        <input
-          type="text"
-          placeholder="Filter ID Guru"
-          className="border border-gray-200 rounded-md p-2"
-          value={filter}
-          onChange={(e) => setFilter(e.target.value)}
-        />
+ 
       </div>
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       {absensi.map((absen, index) => (
