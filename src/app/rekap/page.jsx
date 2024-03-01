@@ -9,6 +9,7 @@ export default function RekapPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+
   useEffect(() => {
     async function fetchUniqueDates() {
       try {
