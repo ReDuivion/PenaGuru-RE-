@@ -1,0 +1,10 @@
+* text=auto eol=lf
+
+*.javascript diff=javascript
+*.css diff=css
+*.json diff=json
+
+
+/.github export-ignore
+CHANGELOG.md export-ignore
+.styleci.yml export-ignore
