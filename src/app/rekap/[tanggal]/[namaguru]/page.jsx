@@ -20,7 +20,7 @@ export default function Page() {
           *,
           profiles:id_guru(nama_user)
         `)
-          .eq("tanggal_absensi", decodedTanggal)
+          .eq("tanggal_absensi", decodedTanggal.replace(' ', '+'))
           .eq("id_guru", namaguru);
 
         if (error) {
