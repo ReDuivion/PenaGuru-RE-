@@ -6,7 +6,7 @@ import {
   Modal,
   ModalContent,
   ModalHeader,
-  ModalBody,    
+  ModalBody,
   ModalFooter,
   Button,
   useDisclosure,
@@ -17,7 +17,7 @@ import { startOfDay, setHours, format } from "date-fns";
 import { supabase } from "../../config/supabase";
 import { toast } from "react-toastify";
 import Image from "next/image";
-import PenaGuru from '../../../../public/PenaGuru.png'
+import PenaGuru from "../../../../public/PenaGuru.png";
 export default function LandingPage() {
   const [userData, setUserData] = useState({
     nama_user: "",
@@ -56,7 +56,7 @@ export default function LandingPage() {
       checkOutTime = null;
       break;
   }
-     
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -253,75 +253,77 @@ export default function LandingPage() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
-    {now < checkInTime ?(
-   <>
-  {presensiData && presensiData.check_in ? (
- <> 
-  </>
-   ):(
-<>
-<div className="fixed  top-2 right-0  p-16 ">
-            <div class="  p-4 mb-4 bg-red-500 text-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800">
-              <p>Silahkan CheckIn</p>
-            </div>
-          </div>
-</>
-        )}
+      {now < checkInTime ? (
+        <>
+          {presensiData && presensiData.check_in ? (
+            <></>
+          ) : (
+            <>
+              <div className="fixed  top-2 right-0  p-16 ">
+                <div class="  p-4 mb-4 bg-red-500 text-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800">
+                  <p>Silahkan CheckIn</p>
+                </div>
+              </div>
+            </>
+          )}
         </>
       ) : (
         <>
-        {presensiData && presensiData.check_in ?(
-        <>
-          {now > checkOutTime ?(
-        <>
-        {presensiData && presensiData.check_out ?(
-        <>
-        </>
-        ):
-        (
-        <>
-        <div className="fixed  top-2 right-0  p-16 ">
-            <div class="  p-4 mb-4 bg-red-500 text-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800">
-              <p>Anda belum checkout </p>
-            </div>
-          </div>
-        </>
-        )}
-        </>
-        )
-        :
-        (
-        <>
-         <div className="fixed  top-2 right-0  p-16 ">
-            <div class="  p-4 mb-4 bg-red-500 text-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800">
-              <p>Belum Waktunya checkout</p>
-            </div>
-          </div>
-        </>
-        )}
-        </>
-        ):
-        (
-        <> <div className="fixed  top-2 right-0  p-16 ">
-            <div class="  p-4 mb-4 bg-red-500 text-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800">
-              <p>Lebih dari waktu checkin</p>
-            </div>
-          </div>
-        </>
-        )
-        }
-         
+          {presensiData && presensiData.check_in ? (
+            <>
+              {now > checkOutTime ? (
+                <>
+                  {presensiData && presensiData.check_out ? (
+                    <></>
+                  ) : (
+                    <>
+                      <div className="fixed  top-2 right-0  p-16 ">
+                        <div class="  p-4 mb-4 bg-red-500 text-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800">
+                          <p>Anda belum checkout </p>
+                        </div>
+                      </div>
+                    </>
+                  )}
+                </>
+              ) : (
+                <>
+                  <div className="fixed  top-2 right-0  p-16 ">
+                    <div class="  p-4 mb-4 bg-red-500 text-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800">
+                      <p>Belum Waktunya checkout</p>
+                    </div>
+                  </div>
+                </>
+              )}
+            </>
+          ) : (
+            <>
+              { now > checkOutTime ?(
+              <>
+
+              </>):
+              (
+              <>
+
+              </>
+              )}
+              <div className="fixed  top-2 right-0  p-16 ">
+                <div class="  p-4 mb-4 bg-red-500 text-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800">
+                  <p>Anda Terlambat Absen</p>
+                </div>
+              </div>
+            </>
+          )}
         </>
       )}
       <div className="flex flex-col lg:flex-row justify-center lg:justify-start mx-5">
         <div className="border border-md w-full lg:mr-5 lg:w-1/2 mt-5 lg:mb-5 justify-center text-center pb-5 shadow-lg rounded-lg">
           <h1 className="text-5xl font-bold mt-10">Welcome Back</h1>
-              <Image
-                  src={PenaGuru}
-                  width={70}
-                  height={70}
-                  className="mx-auto my-8"
-                  /> 
+          <Image
+            src={PenaGuru}
+            width={70}
+            height={70}
+            className="mx-auto my-8"
+          />
           <div className="">
             <h1 className="text-2xl">{userData.email}</h1>
             <h1 className="mb-2">({userData.nama_user})</h1>
@@ -462,6 +464,6 @@ export default function LandingPage() {
           )}
         </ModalContent>
       </Modal>
-    </>           
+    </>
   );
 }
