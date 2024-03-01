@@ -21,15 +21,14 @@ export default function RekapTanggalPage() {
     async function fetchAbsensi() {
       try {
         const decodedTanggal = decodeURIComponent(tanggal);
-
+        console.log("Decoded Tanggal:", decodedTanggal);
+    
         const { data: absensiData, error: absensiError } = await supabase
           .from("absensi")
-          .select(`
-          *,
-          profiles:id_guru(nama_user)
-        `)
+          .select('*')
           .eq("tanggal_absensi", decodedTanggal);
-
+    
+        console.log("Absensi Data:", absensiData);
     
         setAbsensi(absensiData);
       } catch (error) {
@@ -37,6 +36,7 @@ export default function RekapTanggalPage() {
           `Error fetching absensi for tanggal ${tanggal}:`,
           error.message
         );
+        console.log("Supabase Error:", error.response);
         setError(`Failed to fetch absensi for tanggal ${tanggal}.`);
       }
     }
