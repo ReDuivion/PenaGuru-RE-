@@ -2,7 +2,6 @@
 import { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
 import { supabase } from "../config/supabase";
-import { lazy } from "react";
 import {
   Card,
   CardHeader,
@@ -13,17 +12,11 @@ import {
 import { Image } from "@nextui-org/react";
 import { Grid } from "@nextui-org/react";
 import Rekap from "../components/Rekap/Rekap";
-
+import Skeletons from "../utils/Skeletons";
 export default function RekapPage() {
-  const Loader = lazy(() => import("../utils/Skeletons"));
   const [uniqueDates, setUniqueDates] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [isLoaded, setIsLoaded] = useState(false);
-
-  const toggleLoad = () => {
-    setIsLoaded(!isLoaded);
-  };
 
   useEffect(() => {
     async function fetchUniqueDates() {
@@ -59,7 +52,7 @@ export default function RekapPage() {
       <h1 className="font-bold text-center text-3xl sm:text-5xl mb-5 mt-3">
         Rekap Absensi
       </h1>
-      <Suspense fallback={<Loader />} className="">
+      <Suspense fallback={<Skeletons/>} className="">
         <Rekap />
       </Suspense>
     </div>
