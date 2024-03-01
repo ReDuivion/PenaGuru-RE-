@@ -166,7 +166,7 @@ export default function Header() {
                   key="copy"
                   startContent={<FaUserGear />}
                 >
-                  Edit Staff
+                  Edit Staffs
                 </DropdownItem>
                 <DropdownItem
                   onClick={handleAdmin}
@@ -202,6 +202,7 @@ export default function Header() {
         </NavbarMenu>
         
       </Navbar>
+     
     </>
   );
 }

@@ -16,10 +16,10 @@ export default function RootLayout({ children }) {
       <body className={inter.className}>
         <Providers>
           <Header />
-          <AuthUser>
+          {/* <AuthUser> */}
 
           {children}
-          </AuthUser>
+          {/* </AuthUser> */}
           <BottomNavigation className="pb-16"/>
         </Providers>
       </body>
