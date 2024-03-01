@@ -12,7 +12,7 @@ import {
 import { Image } from "@nextui-org/react";
 import { Grid } from "@nextui-org/react";
 import Rekap from "../components/Rekap/Rekap";
-import Skeletons from "../utils/Skeletons";
+import Loading from "./loading";
 export default function RekapPage() {
   const [uniqueDates, setUniqueDates] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -52,7 +52,7 @@ export default function RekapPage() {
       <h1 className="font-bold text-center text-3xl sm:text-5xl mb-5 mt-3">
         Rekap Absensi
       </h1>
-      <Suspense fallback={<Skeletons/>} className="">
+      <Suspense fallback={<Loading/>} className="">
         <Rekap />
       </Suspense>
     </div>
