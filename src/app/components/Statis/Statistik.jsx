@@ -12,6 +12,7 @@ import {
   StackDivider,
   Text,
 } from "@chakra-ui/react";
+import UserAuth from "@/app/middleware/user";
 export default function Statistik() {
   const [user, setUser] = useState(null);
   const [absensi, setAbsensi] = useState([]);
@@ -83,6 +84,7 @@ export default function Statistik() {
 
   return (
     <>
+    <UserAuth/>
 <main className="container mx-auto px-4">
   <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 xl:grid-cols-4 gap-4">
     <div className="sm:col-span-1 md:col-span-1 lg:col-span-1 xl:col-span-3 mb-8">
