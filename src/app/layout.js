@@ -14,18 +14,20 @@ export default function RootLayout({ children }) {
     return (
         <html lang="en">
             <Head>
-            <title>PEGUSMKN7</title>
-            <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-            <meta property="og:title" content="PEGUSMKN7" key="title" />
-            
-                <body className={inter.className}>
-                    <Providers>
-                        <Header />
-                        {children}
-                        <BottomNavigation className="pb-16" />
-                    </Providers>
-                </body>
+                <meta charset="utf-8" />
+                <title>PEGUSMKN7</title>
+                <meta
+                    name="viewport"
+                    content="initial-scale=1.0, width=device-width"
+                />
             </Head>
+            <body className={inter.className}>
+                <Providers>
+                    <Header />
+                    {children}
+                    <BottomNavigation className="pb-16" />
+                </Providers>
+            </body>
         </html>
     );
 }
