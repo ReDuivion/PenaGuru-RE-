@@ -24,7 +24,7 @@ export default function RekapTanggalPage() {
         const { data: absensiData, error: absensiError } = await supabase
           .from("absensi")
           .select("*")
-          .eq("tanggal_absensi", decodedTanggal);
+          .eq("tanggal_absensi", decodedTanggal.replace(' ', '+'));
 
 
         setAbsensi(absensiData);
