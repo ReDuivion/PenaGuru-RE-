@@ -83,11 +83,10 @@ export default function Header() {
   const handleHome = () => {
     router.push("/");
   };
-  const showHeader = router.pathname === '/rekap/[tanggal]/[namaguru]' ? false : true;
+
   return (
     <>
-    {showHeader && <Header />}
-    <Component {...pageProps} />
+ 
       <Navbar
         isBordered
         isMenuOpen={isMenuOpen}
