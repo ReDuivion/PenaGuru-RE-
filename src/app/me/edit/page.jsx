@@ -24,6 +24,9 @@ import {
   faPlus,
   faPenToSquare,
 } from "@fortawesome/free-solid-svg-icons";
+// import User from "../../middleware/user"
+import UserAuth from "../../middleware/user";
+
 
 export default function EditProfile() {
   const [userEmail, setUserEmail] = useState(null);
@@ -391,7 +394,8 @@ export default function EditProfile() {
 
   return (
     <>
-      
+      {/* <User/> */}
+      <UserAuth/>
       <div className="pb-96">
       <div className="card w-96 bg-base-100 shadow-xl mx-auto ">
         <div className="card-body">
@@ -399,7 +403,7 @@ export default function EditProfile() {
             <FontAwesomeIcon
               icon={faBackward}
               className="text-green-600 cursor-pointer"
-              onPress={() => router.push("/me")}
+              onClick={() => router.push("/me")}
             />
           </div>
           <h2 className="card-title mx-auto">
