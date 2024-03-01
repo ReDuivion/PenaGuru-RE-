@@ -59,7 +59,7 @@ export default function RekapPage() {
       <h1 className="font-bold text-center text-3xl sm:text-5xl mb-5 mt-3">
         Rekap Absensi
       </h1>
-      <Suspense fallback={<Loader/>} className="bg-sky-500">
+      <Suspense fallback={<Loader/>} className="">
 
         <Rekap />
       </Suspense>
