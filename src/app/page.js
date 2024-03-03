@@ -5,6 +5,8 @@ import moment from "moment-timezone";
 import Carousels from "./components/Home/Carousels.jsx";
 import HeroSection from "./components/Home/HeroSection.jsx";
 import Superiority from "./components/Home/Superiority.jsx";
+import ScrollToTop from "./components/Home/ScrolToTop.jsx";
+import UserAuth from "./middleware/user.jsx";
 
 export default function Home() {
   const [lastActivityLocal, setLastActivityLocal] = useState("");
@@ -72,11 +74,12 @@ export default function Home() {
     <div>
       {/* <h1>Hello World</h1>
            <Carousels />
-      <p>Last Activity (Local): {lastActivityLocal}</p> */}
+      <p>Last Activit jlhsdaflhaly (Local): {lastActivityLocal}</p> */}
 
-      
+      <UserAuth/>
       <HeroSection />
       <Superiority/>
+      <ScrollToTop/>
     </div>
   );
 }

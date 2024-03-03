@@ -230,6 +230,8 @@
 
 
 import LandingPage from "../components/Me/LandingPage";
+import GuruAuth from "../middleware/GuruAuth";
+import UserAuth from "../middleware/user";
 
 export default function page() {
   return (
@@ -237,6 +239,8 @@ export default function page() {
       <main>
         <div>
           <section>
+            <UserAuth/>
+            {/* <GuruAuth/> */}
             <LandingPage/>
           </section>
         </div>
