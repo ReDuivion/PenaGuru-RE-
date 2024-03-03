@@ -1,7 +1,7 @@
 "use client";
 import { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
-import { supabase } from "../config/supabase";
+import { supabase } from "../../config/supabase";
 import {
   Card,
   CardHeader,
@@ -9,16 +9,20 @@ import {
   CardFooter,
   Skeleton,
 } from "@nextui-org/react";
+import { lazy } from "react";
 import { Image } from "@nextui-org/react";
 import { Grid } from "@nextui-org/react";
-import Rekap from "../components/Rekap/Rekap";
-import Loading from "./loading";
-export default function RekapPage() {
+
+export default function Rekap() {
   const [uniqueDates, setUniqueDates] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isLoaded, setIsLoaded] = useState(false);
 
-  
+  const toggleLoad = () => {
+    setIsLoaded(!isLoaded);
+  };
+
   useEffect(() => {
     async function fetchUniqueDates() {
       try {
@@ -41,7 +45,6 @@ export default function RekapPage() {
 
   if (loading) {
     <div>Loading..</div>;
-    console.log(loading);
   }
 
   if (error) {
@@ -50,32 +53,19 @@ export default function RekapPage() {
 
   return (
     <div>
-      <h1 className="font-bold text-center text-3xl sm:text-5xl mb-5 mt-3">
-        Rekap Absensi
-      </h1>
-      <Suspense fallback={<Loading/>} className="">
-        <Rekap />
-      </Suspense>
-      <h1>Rekap Absensi</h1>
-      <ul>
+      <ul className="grid grid-cols-2 sm:grid-cols-3">
         {uniqueDates.map((date) => (
-          <li key={date.tanggal_absensi}>
-
-       
-            <Link href={`/rekap/${date.tanggal_absensi}`}>
-        
-
-            <Link href={`/Rekap/${date.tanggal_absensi}`}>
-
-
-              {new Date(date.tanggal_absensi).toLocaleDateString()}
-            </Link>
+          <li className="" key={date.tanggal_absensi}>
+            <div className="flex">
+              <div className="border-small mx-1 w-full py-4 sm:py-2 text-center my-1 rounded-lg shadow-sm">
+                <Link href={`/rekap/${date.tanggal_absensi}`}>
+                  {new Date(date.tanggal_absensi).toLocaleDateString()}
+                </Link>
+              </div>
+            </div>
           </li>
         ))}
       </ul>
     </div>
   );
-
-}
-
 }
