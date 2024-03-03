@@ -303,14 +303,14 @@ export default function LandingPage() {
               </>):
               (
               <>
-
-              </>
-              )}
               <div className="fixed  top-2 right-0  p-16 ">
                 <div class="  p-4 mb-4 bg-red-500 text-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800">
                   <p>Anda Terlambat Absen</p>
                 </div>
               </div>
+
+              </>
+              )}
             </>
           )}
         </>

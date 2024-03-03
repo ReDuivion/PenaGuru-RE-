@@ -55,7 +55,9 @@ export default function Statistik() {
         const { data: absensiData, error: absensiError } = await supabase
           .from("absensi")
           .select("*")
-          .eq("id_guru", guruId);
+          .eq("id_guru", guruId)
+          .order("tanggal_absensi", { ascending: false })
+          // .limit(2);
         if (absensiError) {
           console.error("Error fetching absensi data:", absensiError);
           return;

@@ -3,7 +3,7 @@ export default function Footer (){
 
     return (
         <>
-        <footer class="footer p-10 bg-base-200 text-base-content ">
+        <footer class="footer p-10 bg-base-200 text-base-content mt-96 ">
         <aside>
          {/* <img src={PenaGuru} alt="" width="50" height="50" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd" class="fill-current"></img> */}
           <p>© 2024 PENAGURU. All rights reserved.</p>
