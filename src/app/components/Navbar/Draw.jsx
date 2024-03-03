@@ -85,6 +85,14 @@ export default function Draw() {
   const handleStatis = () => {
     router.push("/me/statistik");
   };
+  const handleLogout = async () => {
+    try {
+      const { error } = await supabase.auth.signOut();
+      router.push("/login");
+    } catch (error) {
+      console.error("Error signing out:", error.message);
+    }
+  };
 
   return (
     <>
@@ -140,7 +148,12 @@ export default function Draw() {
             >
               Statistik
             </p>
-
+            <p
+              className="cursor-pointer font-semibold text-lg mt-2"
+              onClick={handleLogout}
+            >
+              Logout
+            </p>
             <p className="mt-96 text-lg font-bold">{userData.email}</p>
             <p className="text-lg font-semibold">123.456.789</p>
           </DrawerBody>
