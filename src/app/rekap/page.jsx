@@ -18,6 +18,7 @@ export default function RekapPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  
   useEffect(() => {
     async function fetchUniqueDates() {
       try {
@@ -55,6 +56,26 @@ export default function RekapPage() {
       <Suspense fallback={<Loading/>} className="">
         <Rekap />
       </Suspense>
+      <h1>Rekap Absensi</h1>
+      <ul>
+        {uniqueDates.map((date) => (
+          <li key={date.tanggal_absensi}>
+
+       
+            <Link href={`/rekap/${date.tanggal_absensi}`}>
+        
+
+            <Link href={`/Rekap/${date.tanggal_absensi}`}>
+
+
+              {new Date(date.tanggal_absensi).toLocaleDateString()}
+            </Link>
+          </li>
+        ))}
+      </ul>
     </div>
   );
+
+}
+
 }

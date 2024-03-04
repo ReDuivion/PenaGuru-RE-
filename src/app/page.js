@@ -6,6 +6,7 @@ import Carousels from "./components/Home/Carousels.jsx";
 import HeroSection from "./components/Home/HeroSection.jsx";
 import Superiority from "./components/Home/Superiority.jsx";
 import ScrollToTop from "./components/Home/ScrolToTop.jsx";
+import UserAuth from "./middleware/user.jsx";
 
 export default function Home() {
   const [lastActivityLocal, setLastActivityLocal] = useState("");
@@ -75,7 +76,7 @@ export default function Home() {
            <Carousels />
       <p>Last Activit jlhsdaflhaly (Local): {lastActivityLocal}</p> */}
 
-      
+      <UserAuth/>
       <HeroSection />
       <Superiority/>
       <ScrollToTop/>
