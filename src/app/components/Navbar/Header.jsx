@@ -114,7 +114,7 @@ export default function Header() {
             </Link>
           </NavbarBrand>
           <NavbarItem>
-            <Link className="hover:text-lg hover:underline hover:cursor-pointer" href="/me/absen" underline="">
+            <Link className="hover:text-lg hover:underline hover:cursor-pointer" href="/me" underline="">
               Presensi
             </Link>
           </NavbarItem>

@@ -127,6 +127,7 @@ export default function Statistik() {
                             height={200}
                             src={absen.foto_kegiatan_url}
                             alt="Kegiatan"
+                            className="object-contain"
                           />
                         </p>
                       </div>
