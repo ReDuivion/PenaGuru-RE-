@@ -124,7 +124,7 @@ export default function Statistik() {
                         <p>
                           <Image
                             width={500}
-                            height={500}
+                            height={200}
                             src={absen.foto_kegiatan_url}
                             alt="Kegiatan"
                           />

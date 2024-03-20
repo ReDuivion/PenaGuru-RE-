@@ -9,35 +9,16 @@ const HeroSection = () => {
     router.push("/me")
   }
   return (
-    <div className="bg-blue-500 text-white py-20 px-4">
-      <div className="max-w-4xl mx-auto text-center">
-        <h1 className="text-4xl md:text-6xl font-bold mb-4">
-          Selamat Datang di PenaGuru
-        </h1>
-        <p className="text-lg md:text-xl mb-8">
-          Solusi presensi modern untuk pendidikan.
-        </p>
-        
-        <div className="flex justify-center">
-          <Button
-            variant=""
-            size="large"
-            className="mr-4 bg-green-500"
-            onClick={handleAbsensei}
-          >
-            Mulai Presensi
-          </Button>
-          <Button
-            variant="outlined"
-            size="large"
-            className="bg-purple-500"
-            onClick={() => console.log("Pindah ke halaman tentang")}
-          >
-            Pelajari Lebih Lanjut
-          </Button>
-        </div>
+    <div class="hero min-h-screen background-image: url();">
+    <div class="hero-overlay bg-opacity-60"></div>
+    <div class="hero-content text-center text-neutral-content">
+      <div class="max-w-md">
+        <h1 class="mb-5 text-5xl font-bold">Pena Guru</h1>
+        <p class="mb-5">Pena Guru adalah sebuah website yang dibuat untuk mempermudah absensi Guru</p>
+        <button class="btn btn-primary">Mulai</button>
       </div>
     </div>
+  </div>
   );
 };
 

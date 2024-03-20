@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { supabase } from '../config/supabase';
+import Rekap from '../components/Rekap/Rekap';
 
 export default function RekapPage() {
   const [uniqueDates, setUniqueDates] = useState([]);
@@ -37,24 +38,9 @@ export default function RekapPage() {
   }
 
   return (
-    <div>
-      <h1>Rekap Absensi</h1>
-      <ul>
-        {uniqueDates.map((date) => (
-          <li key={date.tanggal_absensi}>
-
-      
-        
-
-            <Link href={`/rekap/${date.tanggal_absensi}`}>
-
-
-              {new Date(date.tanggal_absensi).toLocaleDateString()}
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </div>
+   <>
+   <Rekap/>
+   </>
   );
 
 }
