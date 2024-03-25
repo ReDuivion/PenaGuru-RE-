@@ -18,9 +18,11 @@ import {
   TiSocialYoutube,
   TiSocialFacebook,
 } from "react-icons/ti";
+import penagurulogo from "../../../../public/PenaGuruRes.png"
 import { TfiWorld } from "react-icons/tfi";
 import { useRouter } from "next/navigation";
 import { supabase } from "../../config/supabase";
+import Image from "next/image";
 export default function Draw() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [placement, setPlacement] = useState("left");
@@ -111,10 +113,10 @@ export default function Draw() {
             <NavbarContent className=" pr-3" justify="center">
               <NavbarBrand>
                 <p
-                  className="font-bold text-blue-500 cursor-pointer text-2xl"
+                  className="font-bold text-blue-500 cursor-pointer"
                   onClick={handleHom}
                 >
-                  PenaGuru
+                  <Image src={penagurulogo} width={100}/>
                 </p>
               </NavbarBrand>
               <DrawerCloseButton
